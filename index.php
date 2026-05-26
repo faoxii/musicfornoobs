@@ -8,18 +8,19 @@
 
 session_start();
 
-// Includes des libs
-include("libs/config.php");
-include("libs/maLibSQL.pdo.php");
-include("libs/maLibUtils.php");
-include("libs/maLibSecurisation.php");
+
 
 // Includes des modeles
-include("libs/modele/modele_users.php");
-include("libs/modele/modele_fiches.php");
-include("libs/modele/modele_quiz.php");
-include("libs/modele/modele_progression.php");
-include("libs/modele/modele_resultats.php");
+include_once("libs/modele/modele_users.php");
+include_once("libs/modele/modele_fiches.php");
+include_once("libs/modele/modele_quiz.php");
+include_once("libs/modele/modele_progression.php");
+include_once("libs/modele/modele_resultats.php");
+// Includes des libs
+include_once("libs/config.php");
+include_once("libs/maLibSQL.pdo.php");
+include_once("libs/maLibUtils.php");
+include_once("libs/maLibSecurisation.php");
 
 // Vue demandee, par defaut "accueil"
 $view = valider("view", "GET");

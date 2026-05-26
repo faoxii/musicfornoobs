@@ -1,7 +1,5 @@
 <?php
 
-include_once "maLibUtils.php";	// Car on utilise la fonction valider()
-include_once "modele.php";	// Car on utilise la fonction connecterUtilisateur()
 
 /**
  * @file login.php
@@ -18,22 +16,24 @@ include_once "modele.php";	// Car on utilise la fonction connecterUtilisateur()
  * @param string $password
  * @return false ou true ; un effet de bord est la création de variables de session
  */
-function verifUser($login,$password)
+function verifUser($login, $password)
 {
-	
-	$id = verifUserBdd($login,$password);
+    // On appelle le modèle pour vérifier en BDD
+    $id = verifUserBdd($login, $password);
 
-	if (!$id) return false; 
+    if (!$id) return false; 
 
-	// Cas succès : on enregistre pseudo, idUser dans les variables de session 
-	// il faut appeler session_start ! 
-	// Le controleur le fait déjà !!
-	$_SESSION["pseudo"] = $login;
-	$_SESSION["idUser"] = $id;
-	$_SESSION["connecte"] = true;
-	$_SESSION["heureConnexion"] = date("H:i:s");
-	return true;
-	
+    // On récupère les infos de l'utilisateur pour avoir son rôle
+    $userInfos = getUtilisateur($id);
+
+    // On crée les variables de session définies dans le L3
+    $_SESSION["login"] = $login;
+    $_SESSION["idUser"] = $id;
+    $_SESSION["role"] = $userInfos["role"]; // Important pour l'accès admin !
+    $_SESSION["connecte"] = true;
+    $_SESSION["heureConnexion"] = date("H:i:s");
+    
+    return true;
 }
 
 

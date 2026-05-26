@@ -1,6 +1,5 @@
 <?php
 
-include_once "config.php";
 
 /**
  * @file maLibSQL.php
