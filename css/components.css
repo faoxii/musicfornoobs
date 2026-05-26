@@ -1,0 +1,230 @@
+/*
+ * Fichier : css/components.css
+ * Auteurs : LEFEBVRE Lucas / BOURGUIGNON Mathis
+ * Description : composants reutilisables (boutons, cartes, badges, forms, audio player...)
+ */
+
+
+/* === BOUTONS === */
+.btn {
+    display: inline-block;
+    padding: 12px 24px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-title);
+    font-size: 22px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+    text-decoration: none;
+}
+
+.btn-primary {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+}
+
+.btn-secondary {
+    background: var(--bg);
+    color: var(--text);
+}
+
+.btn-danger {
+    background: var(--error);
+    color: white;
+    border-color: var(--error);
+}
+
+
+/* === BADGES === */
+.badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 8px;
+    font-family: var(--font-body);
+    font-size: 16px;
+    border: 1px solid;
+}
+
+.badge-gammes      { background: var(--cat-gammes);      color: white; border-color: var(--cat-gammes); }
+.badge-accords     { background: var(--cat-accords);     color: white; border-color: var(--cat-accords); }
+.badge-intervalles { background: var(--cat-intervalles); color: white; border-color: var(--cat-intervalles); }
+
+.badge-niveau {
+    background: var(--bg);
+    color: var(--text-muted);
+    border-color: var(--border);
+}
+
+.badge-etat-lue {
+    background: var(--success);
+    color: white;
+    border-color: var(--success);
+}
+
+.badge-etat-non-lue {
+    background: var(--bg);
+    color: var(--text-muted);
+    border-color: var(--border);
+}
+
+
+/* === CARTES === */
+.card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+}
+
+.card-fiche {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.card-fiche-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card-fiche-titre {
+    font-family: var(--font-title);
+    font-size: 24px;
+    margin: 8px 0;
+}
+
+.card-fiche-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.card-fiche-actions .btn {
+    flex: 1;
+}
+
+
+/* === FORMULAIRES === */
+.input, .textarea, .select {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 16px;
+}
+
+.input:focus, .textarea:focus, .select:focus {
+    outline: none;
+    border-color: var(--accent);
+}
+
+.textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+label {
+    display: block;
+    margin-bottom: 16px;
+    font-family: var(--font-body);
+}
+
+label > span {
+    display: block;
+    margin-bottom: 4px;
+    font-weight: 700;
+}
+
+
+/* === ALERTS === */
+.alert {
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    font-family: var(--font-body);
+}
+
+.alert-error   { background: #FEE2E2; color: var(--error); }
+.alert-success { background: #D1FAE5; color: var(--success); }
+
+
+/* === LECTEUR AUDIO === */
+.audio-player {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+}
+
+.audio-player-play {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+/* === SIDEBAR DE FILTRES === */
+.sidebar-filtres {
+    background: var(--bg);
+    border-right: 1px solid var(--border);
+    padding: 24px;
+    width: 240px;
+}
+
+.sidebar-filtres h3 {
+    font-size: 20px;
+    margin-bottom: 12px;
+}
+
+.filter-btn {
+    display: block;
+    width: 100%;
+    padding: 10px 16px;
+    margin-bottom: 8px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    text-align: left;
+    cursor: pointer;
+}
+
+.filter-btn.active {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+}
+
+
+/* === HIGHLIGHT ORANGE (mots cles dans les titres) === */
+.highlight {
+    background: var(--accent);
+    color: white;
+    padding: 0 8px;
+}

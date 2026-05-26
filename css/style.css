@@ -1,0 +1,165 @@
+/*
+ * Fichier : css/style.css
+ * Auteurs : LEFEBVRE Lucas / BOURGUIGNON Mathis
+ * Description : variables CSS, reset, typographie, layout global
+ */
+
+
+/* === VARIABLES CSS === */
+:root {
+    /* Couleurs principales */
+    --bg: #FAF9F6;
+    --text: #1F2937;
+    --text-muted: #6B7280;
+    --accent: #F97316;
+    --border: #E5E7EB;
+    --highlight-bg: #DBEAFE;
+
+    /* Couleurs categories */
+    --cat-gammes: #D4A52A;
+    --cat-accords: #E07A6E;
+    --cat-intervalles: #3DB5C9;
+
+    /* Couleurs etats */
+    --success: #22C55E;
+    --error: #EF4444;
+    --in-progress: #3B82F6;
+
+    /* Couleurs medailles */
+    --medal-gold: #FBBF24;
+    --medal-silver: #D1D5DB;
+    --medal-bronze: #D97757;
+
+    /* Polices */
+    --font-title: 'Caveat', cursive;
+    --font-body: 'Kalam', cursive;
+    --font-mono: 'JetBrains Mono', monospace;
+}
+
+
+/* === RESET === */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+
+/* === BASE === */
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 18px;
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+h1, h2, h3 {
+    font-family: var(--font-title);
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+h1 { font-size: 48px; }
+h2 { font-size: 36px; }
+h3 { font-size: 24px; }
+
+a {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+
+/* === LAYOUT === */
+.container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 32px;
+}
+
+
+/* === NAVBAR === */
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 32px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+}
+
+.navbar-logo {
+    font-family: var(--font-title);
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.navbar-logo:hover {
+    text-decoration: none;
+}
+
+.logo-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    font-size: 18px;
+}
+
+.navbar-links {
+    display: flex;
+    gap: 32px;
+    font-family: var(--font-title);
+    font-size: 22px;
+}
+
+.navbar-links a {
+    color: var(--text-muted);
+}
+
+.navbar-links a.active {
+    color: var(--text);
+    font-weight: 700;
+}
+
+.navbar-user .avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+
+/* === ANNOTATIONS MONO (// commentaires) === */
+.annotation {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+    .container { padding: 16px; }
+    h1 { font-size: 36px; }
+    .navbar { padding: 12px 16px; }
+    .navbar-links { gap: 16px; font-size: 18px; }
+}

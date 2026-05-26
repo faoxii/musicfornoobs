@@ -1,0 +1,179 @@
+/*
+ * Fichier : css/pages.css
+ * Auteurs : LEFEBVRE Lucas / BOURGUIGNON Mathis
+ * Description : styles specifiques a certaines pages
+ *               (notes de gamme, medailles classement, barre de progression quiz, etc.)
+ */
+
+
+/* === FICHE DETAIL : notes de la gamme === */
+.notes-gamme {
+    display: flex;
+    gap: 8px;
+    margin: 16px 0;
+}
+
+.note-case {
+    width: 64px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-family: var(--font-title);
+    font-size: 32px;
+}
+
+.note-case.active {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+}
+
+
+/* === QUIZ : barre de progression segmentee === */
+.quiz-progress {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+}
+
+.quiz-progress-segment {
+    flex: 1;
+    height: 24px;
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    background: var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+.quiz-progress-segment.done    { background: var(--success);     color: white; border-color: var(--success); }
+.quiz-progress-segment.current { background: var(--in-progress); color: white; border-color: var(--in-progress); }
+
+
+/* === QUIZ : reponses radio === */
+.reponse-quiz {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 20px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin-bottom: 8px;
+    cursor: pointer;
+}
+
+.reponse-quiz.selected {
+    background: #FED7AA;
+    border-color: var(--accent);
+}
+
+.reponse-quiz-letter {
+    font-family: var(--font-title);
+    font-size: 24px;
+    color: var(--text-muted);
+    margin-right: 8px;
+}
+
+
+/* === RESULTATS : detail des reponses === */
+.resultat-question {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    border-bottom: 1px dashed var(--border);
+}
+
+.resultat-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: white;
+}
+
+.resultat-icon.correct   { background: var(--success); }
+.resultat-icon.incorrect { background: var(--error); }
+
+.resultat-question.wrong { background: #FEE2E2; }
+
+
+.reponse-barree {
+    text-decoration: line-through;
+    color: var(--error);
+}
+
+
+/* === CLASSEMENT : medailles === */
+.medaille {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-title);
+    font-size: 24px;
+    color: white;
+}
+
+.medaille-1 { background: var(--medal-gold); }
+.medaille-2 { background: var(--medal-silver); color: var(--text); }
+.medaille-3 { background: var(--medal-bronze); }
+
+.classement-ligne {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    border-bottom: 1px dashed var(--border);
+}
+
+.classement-ligne.vous {
+    background: var(--highlight-bg);
+    border-left: 4px solid var(--in-progress);
+}
+
+
+/* === DASHBOARD : 4 cartes stats === */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin: 24px 0;
+}
+
+.stat-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    text-align: center;
+}
+
+.stat-card-value {
+    font-family: var(--font-title);
+    font-size: 48px;
+    color: var(--text);
+}
+
+.stat-card-label {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+}
+
+@media (max-width: 768px) {
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+}
