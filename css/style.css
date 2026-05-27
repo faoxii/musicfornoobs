@@ -1,7 +1,7 @@
 /*
  * Fichier : css/style.css
  * Auteurs : LEFEBVRE Lucas / BOURGUIGNON Mathis
- * Description : variables CSS, reset, typographie, layout global
+ * Description : variables CSS, reset, typographie, layout global, navbar
  */
 
 
@@ -9,9 +9,11 @@
 :root {
     /* Couleurs principales */
     --bg: #FAF9F6;
+    --bg-card: #FFFFFF;
     --text: #1F2937;
     --text-muted: #6B7280;
     --accent: #F97316;
+    --accent-hover: #EA580C;
     --border: #E5E7EB;
     --highlight-bg: #DBEAFE;
 
@@ -55,15 +57,20 @@ body {
     min-height: 100vh;
 }
 
-h1, h2, h3 {
+h1, h2, h3, h4 {
     font-family: var(--font-title);
     font-weight: 700;
     line-height: 1.2;
 }
 
-h1 { font-size: 48px; }
-h2 { font-size: 36px; }
-h3 { font-size: 24px; }
+h1 { font-size: 56px; }
+h2 { font-size: 40px; }
+h3 { font-size: 28px; }
+h4 { font-size: 22px; }
+
+p {
+    margin-bottom: 16px;
+}
 
 a {
     color: var(--accent);
@@ -71,7 +78,7 @@ a {
 }
 
 a:hover {
-    text-decoration: underline;
+    color: var(--accent-hover);
 }
 
 
@@ -88,63 +95,157 @@ a:hover {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 16px 32px;
+    padding: 16px 48px;
     background: var(--bg);
     border-bottom: 1px solid var(--border);
 }
 
+/* Logo : icone + texte */
 .navbar-logo {
-    font-family: var(--font-title);
-    font-size: 28px;
-    font-weight: 700;
-    color: var(--text);
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 12px;
+    font-family: var(--font-title);
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--text);
 }
 
 .navbar-logo:hover {
-    text-decoration: none;
+    color: var(--text);
 }
 
 .logo-icon {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 36px;
-    height: 36px;
+    width: 40px;
+    height: 40px;
     border: 1px solid var(--border);
     border-radius: 50%;
-    font-size: 18px;
+    font-size: 20px;
+    background: var(--bg);
 }
 
+/* Liens de navigation */
 .navbar-links {
     display: flex;
-    gap: 32px;
+    gap: 40px;
     font-family: var(--font-title);
-    font-size: 22px;
+    font-size: 26px;
 }
 
-.navbar-links a {
+.nav-link {
     color: var(--text-muted);
+    transition: color 0.2s;
 }
 
-.navbar-links a.active {
+.nav-link:hover {
+    color: var(--text);
+}
+
+.nav-link.active {
     color: var(--text);
     font-weight: 700;
 }
 
-.navbar-user .avatar {
+
+/* === AVATAR + MENU DEROULANT === */
+.navbar-user {
+    display: flex;
+    align-items: center;
+}
+
+.avatar-menu {
+    position: relative;
+}
+
+.avatar {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 36px;
-    height: 36px;
+    width: 40px;
+    height: 40px;
     border: 1px solid var(--border);
     border-radius: 50%;
+    background: var(--bg);
+    color: var(--text);
     font-family: var(--font-mono);
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.avatar:hover {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+}
+
+/* Menu deroulant : cache par defaut */
+.avatar-dropdown {
+    position: absolute; /* le sort du flux normal de la page */
+    top: calc(100% + 8px); /* le positionne 8px sous l'avatar */
+    right: 0;
+    min-width: 220px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px);
+    transition: all 0.2s;
+    z-index: 100;
+    overflow: hidden;
+}
+
+.avatar-dropdown.open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.avatar-dropdown-header {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.avatar-dropdown-header strong {
+    font-family: var(--font-title);
+    font-size: 20px;
+}
+
+.avatar-dropdown-item {
+    display: block;
+    padding: 12px 16px;
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 16px;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.2s;
+}
+
+.avatar-dropdown-item:last-child {
+    border-bottom: none;
+}
+
+.avatar-dropdown-item:hover {
+    background: var(--bg);
+    color: var(--text);
+}
+
+.avatar-dropdown-logout {
+    color: var(--error);
+}
+
+.avatar-dropdown-logout:hover {
+    background: #FEE2E2;
+    color: var(--error);
 }
 
 
@@ -153,13 +254,51 @@ a:hover {
     font-family: var(--font-mono);
     font-size: 12px;
     color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+
+/* === HIGHLIGHT ORANGE (mots cles dans les titres) === */
+.highlight {
+    background: var(--accent);
+    color: white;
+    padding: 2px 12px;
+    display: inline-block;
 }
 
 
 /* === RESPONSIVE === */
 @media (max-width: 768px) {
-    .container { padding: 16px; }
-    h1 { font-size: 36px; }
-    .navbar { padding: 12px 16px; }
-    .navbar-links { gap: 16px; font-size: 18px; }
+    .container {
+        padding: 16px;
+    }
+
+    h1 { font-size: 40px; }
+    h2 { font-size: 32px; }
+
+    .navbar {
+        padding: 12px 16px;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .navbar-logo {
+        font-size: 24px;
+    }
+
+    .logo-icon {
+        width: 32px;
+        height: 32px;
+        font-size: 16px;
+    }
+
+    .navbar-links {
+        gap: 16px;
+        font-size: 20px;
+        order: 3;
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
 }

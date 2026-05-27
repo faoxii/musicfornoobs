@@ -10,8 +10,8 @@
  * Enregistre la lecture d'une fiche par un utilisateur
  * Ne fait rien si deja enregistre (UNIQUE en BDD)
  */
-function marquerFicheLue($idUtilisateur, $idFiche) {
-    $idU = proteger($idUtilisateur);
+function marquerFicheLue($idUser, $idFiche) {
+    $idU = proteger($idUser);
     $idF = proteger($idFiche);
     
     // on utilise INSERT IGNORE pour éviter une erreur si l'utilisateur 
@@ -27,8 +27,8 @@ function marquerFicheLue($idUtilisateur, $idFiche) {
  * Renvoie le nombre de fiches lues par un utilisateur
  */
 
-function getNbFichesLues($idUtilisateur) {
-    $idU = proteger($idUtilisateur);
+function getNbFichesLues($idUser) {
+    $idU = proteger($idUser);
     $sql = "SELECT COUNT(*) FROM progression WHERE id_utilisateur = '$idU'";
     return SQLGetChamp($sql);
 }
