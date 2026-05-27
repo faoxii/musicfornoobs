@@ -2,8 +2,8 @@
 /*
  * Fichier : index.php
  * Auteurs : LEFEBVRE Lucas / BOURGUIGNON Mathis
- * Description : point d'entree des vues (routeur GET)
- *               recoit ?view=xxx et inclut le template correspondant
+ * Description : point d'entrée des vues (routeur GET)
+ * reçoit ?view=xxx et inclut le template correspondant
  */
 
 session_start();
@@ -23,54 +23,57 @@ include("libs/modele/modele_resultats.php");
 
 
 // ============================================================
-// TODO : RETIRER CE BLOC QUAND L'AUTH SERA CODEE (par Lucas)
+// TODO : DÉCOMMENTER CE BLOC POUR FORCER LA CONNEXION (DEV)
 // Simule une connexion admin pour pouvoir developper les vues
 // sans attendre que l'auth soit prete
 // ============================================================
-if (!isset($_SESSION["connecte"])) {
+/* if (!isset($_SESSION["connecte"])) {
     $_SESSION["connecte"] = true;
     $_SESSION["idUser"] = 1;
     $_SESSION["login"] = "Lucas_L";
     $_SESSION["role"] = "admin";
 }
+*/
 // ============================================================
 
 
-// Vue demandee, par defaut "fiches" si connecte sinon "accueil"
+
 $view = valider("view", "GET");
 if (!$view) {
-    $view = isset($_SESSION["connecte"]) && $_SESSION["connecte"] ? "fiches" : "accueil";
+    $view = "accueil";
 }
 
-// Liste des vues publiques (accessibles sans connexion)
+// si l'utilisateur est connecte et qu'il arrive sur l'accueil, 
+// on l'envoie direct sur son catalogue de fiches
+if ($view === "accueil" && valider("connecte", "SESSION")) {
+    $view = "fiches";
+}
+
+// liste des vues publiques (accessibles sans connexion)
 $vues_publiques = ["accueil", "connexion", "inscription"];
 
-// Liste des vues admin
+// liste des vues admin
 $vues_admin = ["admin_fiches", "admin_fiche_form", "admin_questions", "admin_question_form"];
 
-// Verification de l'acces
-$connecte = isset($_SESSION["connecte"]) && $_SESSION["connecte"];
-$est_admin = isset($_SESSION["role"]) && $_SESSION["role"] === "admin";
+$connecte = valider("connecte", "SESSION");
+$est_admin = valider("role", "SESSION") === "admin";
 
+// si l'user est pas connecte on renvoie vers connexion
 if (!$connecte && !in_array($view, $vues_publiques)) {
     rediriger("index.php?view=connexion");
 }
-
+// si l'user connecté tente d'aller sur une page admin on renvoie vers la page fiches qui est la page par default quand on est connecte
 if (in_array($view, $vues_admin) && !$est_admin) {
     rediriger("index.php?view=fiches");
 }
 
-// Construction du chemin du template
+// construction du chemin du template
 $template = "templates/" . $view . ".php";
 
 if (!file_exists($template)) {
-    // Vue inconnue, on renvoie sur l'accueil
+    // vue inconnue donc on renvoie sur l'accueil
     rediriger("index.php?view=accueil");
 }
-
-// Header commun (sauf pour les pages sans navbar)
-$pages_sans_header = ["accueil", "connexion", "inscription"];
-$avec_header = !in_array($view, $pages_sans_header);
 
 include("templates/header.php");
 include($template);

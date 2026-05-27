@@ -9,41 +9,34 @@
 
 <div class="accueil-wrapper">
 
-    <!-- NAVBAR -->
-    <nav class="accueil-navbar">
-        <a href="index.php?view=accueil" class="navbar-logo">
-            <span class="logo-icon">♪</span>
-            MusicForNoobs
-        </a>
-        <div class="accueil-navbar-actions">
-            <a href="index.php?view=connexion" class="btn btn-secondary">Se connecter</a>
-            <a href="index.php?view=inscription" class="btn btn-primary">S'inscrire</a>
-        </div>
-    </nav>
-
-    <!-- HERO -->
     <section class="hero">
         <h1 class="hero-titre">
-            Apprends la <span class="highlight">théorie musicale</span><br>
-            à ton rythme
+            Apprends la théorie<br>
+            musicale <span class="highlight">à ton rythme</span>
         </h1>
-        <a href="index.php?view=inscription" class="btn btn-primary hero-cta">Commencer</a>
+        <p class="hero-subtitle">Gammes, accords, intervalles — pour débutants.</p>
+        
+        <a href="index.php?view=inscription" class="btn btn-primary hero-cta">Commencer gratuitement &rarr;</a>
     </section>
 
-    <!-- CARTES CATEGORIES -->
     <div class="accueil-categories">
         <div class="accueil-card">
-            <span class="accueil-card-icon">🎵</span>
+            <div class="accueil-card-icon-wrapper">
+                <span class="accueil-card-icon">&#119070;</span> </div>
             <h3 class="accueil-card-titre">Gammes</h3>
             <p class="accueil-card-desc">Majeures, mineures, modes — apprends à les reconnaître à l'oreille.</p>
         </div>
+        
         <div class="accueil-card">
-            <span class="accueil-card-icon">🎸</span>
+            <div class="accueil-card-icon-wrapper">
+                <span class="accueil-card-icon">&#9835;</span> </div>
             <h3 class="accueil-card-titre">Accords</h3>
             <p class="accueil-card-desc">Triades, septièmes, renversements. Construis-les note par note.</p>
         </div>
+        
         <div class="accueil-card">
-            <span class="accueil-card-icon">🎹</span>
+            <div class="accueil-card-icon-wrapper">
+                <span class="accueil-card-icon">&#8645;</span> </div>
             <h3 class="accueil-card-titre">Intervalles</h3>
             <p class="accueil-card-desc">De la seconde à l'octave. La base de toute la théorie musicale.</p>
         </div>

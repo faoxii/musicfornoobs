@@ -10,9 +10,9 @@
     /* Couleurs principales */
     --bg: #FAF9F6;
     --bg-card: #FFFFFF;
-    --text: #1F2937;
+    --text: #000000;
     --text-muted: #6B7280;
-    --accent: #F97316;
+    --accent: #f48300;
     --accent-hover: #EA580C;
     --border: #E5E7EB;
     --highlight-bg: #DBEAFE;
@@ -90,6 +90,7 @@ a:hover {
 }
 
 
+
 /* === NAVBAR === */
 .navbar {
     display: flex;
@@ -97,9 +98,8 @@ a:hover {
     justify-content: space-between;
     padding: 16px 48px;
     background: var(--bg);
-    border-bottom: 1px solid var(--border);
+    border-bottom: 2px solid var(--text); /* Ligne plus épaisse et noire */
 }
-
 /* Logo : icone + texte */
 .navbar-logo {
     display: flex;
@@ -259,13 +259,6 @@ a:hover {
 }
 
 
-/* === HIGHLIGHT ORANGE (mots cles dans les titres) === */
-.highlight {
-    background: var(--accent);
-    color: white;
-    padding: 2px 12px;
-    display: inline-block;
-}
 
 
 /* === RESPONSIVE === */
