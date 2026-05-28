@@ -1,61 +1,51 @@
 <?php
+/*
+ * Fichier : libs/maLibSecurisation.php
+ * Description : helpers d'authentification et de securisation des pages
+ */
 
 
 /**
- * @file login.php
- * Fichier contenant des fonctions de vérification de logins
+ * Verifie login/mot de passe, cree la session si OK
+ * @return bool
  */
+function verifUser($login, $password) {
+    // On recupere la ligne utilisateur depuis le modele
+    $rows = verifUserBdd($login);
 
-/**
- * Cette fonction vérifie si le login/passe passés en paramètre sont légaux
- * Elle stocke les informations sur la personne dans des variables de session : session_start doit avoir été appelé...
- * Infos à enregistrer : pseudo, idUser, heureConnexion, isAdmin
- * Elle enregistre l'état de la connexion dans une variable de session "connecte" = true
- * @pre login et passe ne doivent pas être vides
- * @param string $login
- * @param string $password
- * @return false ou true ; un effet de bord est la création de variables de session
- */
-function verifUser($login, $password)
-{
-    // On appelle le modèle pour vérifier en BDD
-    $id = verifUserBdd($login, $password);
+    if (empty($rows)) return false;
 
-    if (!$id) return false; 
+    $user = $rows[0];
 
-    // On récupère les infos de l'utilisateur pour avoir son rôle
-    $userInfos = getUtilisateur($id);
+    // Verification du mot de passe hache
+    if (!password_verify($password, $user['mot_de_passe'])) return false;
 
-    // On crée les variables de session définies dans le L3
-    $_SESSION["login"] = $login;
-    $_SESSION["idUser"] = $id;
-    $_SESSION["role"] = $userInfos["role"]; // Important pour l'accès admin !
-    $_SESSION["connecte"] = true;
+    // On recupere les infos completes (role notamment)
+    $infos = getUtilisateur($user['id']);
+    if (empty($infos)) return false;
+    $infos = $infos[0];
+
+    // Creation des variables de session
+    $_SESSION["connecte"]       = true;
+    $_SESSION["idUser"]         = $user['id'];
+    $_SESSION["login"]          = $login;
+    $_SESSION["role"]           = $infos['role'];
     $_SESSION["heureConnexion"] = date("H:i:s");
-    
+
     return true;
 }
 
 
-
-
 /**
- * Fonction à placer au début de chaque page privée
- * Cette fonction redirige vers la page $urlBad en envoyant un message d'erreur 
-	et arrête l'interprétation si l'utilisateur n'est pas connecté
- * Elle ne fait rien si l'utilisateur est connecté, et si $urlGood est faux
- * Elle redirige vers urlGood sinon
+ * Securise une page privee — redirige si non connecte
  */
-function securiser($urlBad,$urlGood=false)
-{
-	if (! valider("connecte","SESSION")) {
-		rediriger($urlBad);
-		die("");
-	}
-	else {
-		if ($urlGood)
-			rediriger($urlGood);
-	}
+function securiser($urlBad, $urlGood = false) {
+    if (!valider("connecte", "SESSION")) {
+        rediriger($urlBad);
+        die("");
+    } else {
+        if ($urlGood) rediriger($urlGood);
+    }
 }
 
 ?>
