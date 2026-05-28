@@ -16,7 +16,7 @@
         </h1>
         <p class="hero-subtitle">Gammes, accords, intervalles — pour débutants.</p>
         
-        <a href="index.php?view=inscription" class="btn btn-primary hero-cta">Commencer gratuitement &rarr;</a>
+        <a href="index.php?view=inscription" class="btn btn-primary hero-cta">Commencer &rarr;</a>
     </section>
 
     <div class="accueil-categories">

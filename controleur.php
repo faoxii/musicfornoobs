@@ -23,23 +23,55 @@ include_once("libs/maLibUtils.php");
 include_once("libs/maLibSecurisation.php");
 
 // Action demandee
-$action = valider("action", "POST");
+$action = valider("action");
 
 switch ($action) {
 
     case "Connexion":
-        // TODO Lucas : verifier identifiants + creer session
-        rediriger("index.php?view=fiches");
+        // 1. On récupère les données du formulaire
+        $login = valider("login", "POST");
+        $passe = valider("passe", "POST");
+
+        if ($login && $passe) {
+            // 2. verifUser vérifie le mot de passe et crée la session si c'est bon
+            if (verifUser($login, $passe)) {
+                rediriger("index.php?view=fiches");
+            } else {
+                // 3. Si erreur, on renvoie vers la page avec un message
+                rediriger("index.php?view=connexion", "msg=Pseudo ou mot de passe incorrect");
+            }
+        }
         break;
 
     case "Inscription":
-        // TODO Lucas : creer le compte + connecter
-        rediriger("index.php?view=fiches");
+        // 1. On récupère les données
+        $login = valider("login", "POST");
+        $email = valider("email", "POST");
+        $passe = valider("passe", "POST");
+
+        if ($login && $email && $passe) {
+            // 2. On vérifie d'abord si le pseudo n'est pas déjà pris
+            if (loginExiste($login)) {
+                rediriger("index.php?view=inscription", "msg=Ce pseudo est déjà utilisé");
+            } else {
+                // 3. On crée l'utilisateur dans la BDD
+                $idUser = creerUtilisateur($login, $email, $passe);
+                
+                // 4. Une fois créé, on le connecte automatiquement
+                verifUser($login, $passe);
+                rediriger("index.php?view=fiches");
+            }
+        }
         break;
 
     case "Logout":
-        // TODO Lucas : detruire la session
+        // 1. On vide le tableau de session
+        $_SESSION = array();
+
+        // 2. On détruit la session côté serveur
         session_destroy();
+
+        // 3. On redirige vers l'accueil pour les non-connectés
         rediriger("index.php?view=accueil");
         break;
 

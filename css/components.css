@@ -238,3 +238,39 @@ label > span {
     transform: rotate(-2deg); /* Un tout petit peu moins incliné */
     border-radius: 4px;
 }
+
+.auth-container { 
+    display: flex; 
+    justify-content: center; 
+    padding-top: 50px; 
+}
+
+.auth-box { 
+    background: white; 
+    padding: 32px; 
+    border: 2px solid black; 
+    border-radius: 12px; 
+    width: 400px; 
+}
+
+.form-group { 
+    margin-bottom: 20px; 
+    display: flex; 
+    flex-direction: column; 
+}
+
+.form-group label { 
+    font-family: var(--font-title)
+    ; font-size: 22px; 
+}
+
+.form-group input { padding: 10px; 
+    border: 1px solid var(--border); 
+    border-radius: 8px; 
+    font-family: var(--font-body); 
+}
+
+.btn-full { 
+    width: 100%; 
+    margin-top: 10px; 
+}
