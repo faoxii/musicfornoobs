@@ -23,23 +23,31 @@ include_once("libs/maLibUtils.php");
 include_once("libs/maLibSecurisation.php");
 
 // Action demandee
-$action = valider("action");
+$action = valider("action","POST");
 
 switch ($action) {
 
     case "Connexion":
-        // 1. On récupère les données du formulaire
+        // on récupère les données du formulaire
         $login = valider("login", "POST");
         $passe = valider("passe", "POST");
 
-        if ($login && $passe) {
-            // 2. verifUser vérifie le mot de passe et crée la session si c'est bon
+        // on vérifie que les champs ont bien été saisis
+        if ($login !== false && $passe !== false) {
+            
+
             if (verifUser($login, $passe)) {
                 rediriger("index.php?view=fiches");
             } else {
-                // 3. Si erreur, on renvoie vers la page avec un message
-                rediriger("index.php?view=connexion", "msg=Pseudo ou mot de passe incorrect");
+                $message = urlencode("Pseudo ou mot de passe incorrect");
+                rediriger("index.php?view=connexion&msg=" . $message);
             }
+            
+        } else {
+            // même si le HTML 'required' bloque les champs vides, 
+            // on vérifie côté serveur au cas ou 
+            $message = urlencode("Veuillez remplir tous les champs");
+            rediriger("index.php?view=connexion&msg=" . $message);
         }
         break;
 

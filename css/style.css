@@ -295,3 +295,10 @@ a:hover {
         flex-wrap: wrap;
     }
 }
+
+
+
+.auth-footer {
+    margin-top: 10px;
+    margin-bottom: 0px;
+}
