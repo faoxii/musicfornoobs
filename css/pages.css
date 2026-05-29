@@ -267,3 +267,20 @@
     .hero-titre { font-size: 40px; }
     .accueil-categories { grid-template-columns: 1fr; padding: 0 16px 40px; }
 }
+
+/* === DASHBOARD === */
+.avatar-large {
+    width: 64px;
+    height: 64px;
+    font-size: 22px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-weight: 600;
+    flex-shrink: 0;
+}
