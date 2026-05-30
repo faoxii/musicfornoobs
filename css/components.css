@@ -274,3 +274,252 @@ label > span {
     width: 100%; 
     margin-top: 10px; 
 }
+
+/* =========================================
+   COMPOSANT : LECTEUR AUDIO 
+   ========================================= */
+
+.audio-player-container {
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+}
+
+.audio-progress-bg {
+    flex: 1;
+    margin: 0 16px;
+    background: var(--border, #e0e0e0);
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.audio-progress-fill {
+    height: 100%;
+    background: var(--text, #333);
+    /* L'animation fluide quand la largeur change */
+    transition: width 0.1s linear; 
+}
+
+
+/* =========================================
+   COMPOSANTS "STYLE CARNET" (Bordures noires)
+   ========================================= */
+
+.search-input-custom {
+    padding: 10px 16px;
+    border-radius: 20px;
+    border: 2px solid var(--text);
+    outline: none;
+    font-family: var(--font-body);
+}
+
+/* --- SIDEBAR --- */
+.sidebar-filtres-custom {
+    width: 260px;
+    min-width: 260px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background-color: #EDEAE3;
+    border-right: 2px solid var(--text);
+    padding: 32px 20px 32px 24px;
+}
+
+.sidebar-titre {
+    font-family: var(--font-title);
+    font-size: 28px;
+    margin-bottom: 0;
+}
+
+.filter-btn-custom {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 16px;
+    border: 2px solid var(--text);
+    border-radius: 12px;
+    text-decoration: none;
+    color: var(--text);
+    background-color: var(--bg-card);
+    font-weight: bold;
+    transition: 0.2s;
+    font-family: var(--font-body);
+}
+
+.filter-btn-custom.active {
+    background-color: var(--accent);
+}
+
+/* --- CARTE PERSONNALISÉE --- */
+.card-fiche-custom {
+    border: 2px solid var(--text);
+    border-radius: 16px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-card);
+}
+
+.card-badges-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.badge-cat-custom {
+    border: 2px solid var(--text);
+    border-radius: 12px;
+    padding: 4px 12px;
+    font-weight: bold;
+    font-family: var(--font-body);
+}
+
+.badge-etat-custom {
+    background: var(--border);
+    border: 2px solid var(--text);
+    border-radius: 12px;
+    padding: 4px 12px;
+    color: var(--text);
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-body);
+}
+
+.dot-non-lue {
+    width: 8px;
+    height: 8px;
+    background-color: #9CA3AF;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.card-decoration {
+    border: 2px dashed #9CA3AF;
+    border-radius: 8px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    color: #9CA3AF;
+    font-family: var(--font-mono);
+    font-size: 12px;
+}
+
+.card-titre-custom {
+    font-family: var(--font-title);
+    font-size: 28px;
+    margin: 0 0 12px 0;
+    line-height: 1.2;
+}
+
+.card-niveau-container {
+    margin-bottom: 24px;
+}
+
+.badge-niveau-custom {
+    border: 2px solid var(--text);
+    border-radius: 12px;
+    padding: 4px 12px;
+    font-size: 14px;
+    font-family: var(--font-body);
+}
+
+/* --- BOUTONS D'ACTION CARTE --- */
+.card-actions-custom {
+    display: flex;
+    gap: 12px;
+    margin-top: auto;
+}
+
+.btn-custom {
+    flex: 1;
+    text-align: center;
+    padding: 10px;
+    border: 2px solid var(--text);
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: bold;
+    color: var(--text);
+    transition: 0.2s;
+    font-family: var(--font-body);
+}
+
+.btn-orange { background-color: var(--accent); }
+.btn-white { background-color: var(--bg-card); }
+
+
+/* =========================================
+   COMPOSANTS ADMIN
+   ========================================= */
+ 
+/* Boutons d'action dans le tableau */
+.admin-btn-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 12px;
+    border: 2px solid var(--text);
+    border-radius: 8px;
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+    color: var(--text);
+    background: var(--bg-card);
+    cursor: pointer;
+    transition: 0.15s;
+}
+ 
+.admin-btn-action:hover {
+    transform: translateY(-1px);
+}
+ 
+.admin-btn-modifier  { background: var(--bg-card); }
+.admin-btn-questions { background: var(--bg-card); }
+.admin-btn-delete    { background: var(--bg-card); color: var(--error); border-color: var(--error); }
+ 
+/* Badges dans le tableau admin */
+.admin-badge-cat {
+    display: inline-block;
+    padding: 4px 12px;
+    border: 2px solid var(--text);
+    border-radius: 8px;
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+}
+
+/* Couleur par catégorie */
+.admin-badge-cat[data-cat="Gammes"]     { background: var(--cat-gammes); }
+.admin-badge-cat[data-cat="Accords"]    { background: var(--cat-accords); }
+.admin-badge-cat[data-cat="Intervalles"]{ background: var(--cat-intervalles); }
+
+.admin-badge-niveau {
+    display: inline-block;
+    padding: 4px 12px;
+    border: 2px solid var(--text);
+    border-radius: 8px;
+    font-family: var(--font-body);
+    font-size: 14px;
+    background: var(--bg-card);
+    color: var(--text);
+}
+
+
+.admin-check { color: var(--success); font-size: 18px; font-weight: 700; }
+.admin-dash  { color: var(--text-muted); }
+
+.badge-lu {
+    background: var(--success);
+    color: white;
+    border-radius: 8px;
+    padding: 3px 10px;
+    font-size: 13px;
+    font-family: var(--font-body);
+    font-weight: 700;
+}

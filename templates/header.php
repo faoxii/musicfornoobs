@@ -103,4 +103,4 @@ document.addEventListener("click", function(event) {
 });
 </script>
 
-<main class="container">
+<main class="<?= (isset($view) && in_array($view, ['fiches', 'quiz', 'fiche_read'])) ? 'container container--full' : 'container' ?>">

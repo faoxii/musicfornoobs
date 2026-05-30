@@ -32,7 +32,7 @@ function getFiches($idCategorie = false, $niveau = false, $recherche = false) {
     // Ca filtre rien du tout, mais ça nous évite de galérer en PHP pour savoir si on 
     // doit écrire "WHERE" ou "AND" pour le premier filtre. Là, on a juste à enchaîner les "AND"
     $sql = "SELECT f.id, f.titre, f.slug, f.niveau, f.chemin_audio, 
-                   c.nom AS nom_categorie, c.couleur 
+                   c.nom AS categorie, c.couleur
             FROM fiches f 
             JOIN categories c ON f.id_categorie = c.id 
             WHERE 1=1";
@@ -71,7 +71,7 @@ function getFicheParSlug($slug) {
     $slugProtege = proteger($slug);
 
     $sql = "SELECT f.id, f.titre, f.slug, f.niveau, f.contenu, f.chemin_audio, 
-                   c.nom AS nom_categorie, c.couleur 
+                   c.nom AS categorie, c.couleur
             FROM fiches f 
             JOIN categories c ON f.id_categorie = c.id 
             WHERE f.slug = '$slugProtege'";
@@ -213,4 +213,23 @@ function genererSlug($titre) {
     return $slug;
 }
 
+
+
+
+/**
+ * Renvoie toutes les fiches avec le nombre de questions (pour l'admin)
+ */
+function getFichesDetaillees() {
+    $sql = "SELECT f.id, f.titre, f.slug, f.niveau, f.chemin_audio,
+                   c.nom AS categorie, c.couleur,
+                   COUNT(q.id) AS nb_questions
+            FROM fiches f
+            JOIN categories c ON f.id_categorie = c.id
+            LEFT JOIN quiz_questions q ON q.id_fiche = f.id
+            GROUP BY f.id, f.titre, f.slug, f.niveau, f.chemin_audio, c.nom, c.couleur
+            ORDER BY f.titre ASC";
+ 
+    return parcoursRs(SQLSelect($sql));
+}
 ?>
+

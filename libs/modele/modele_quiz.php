@@ -147,6 +147,38 @@ function supprimerQuestion($idQuestion) {
 
 
 /**
+ * Crée une réponse pour une question
+ */
+function creerReponse($idQuestion, $contenu, $estCorrect, $ordre) {
+    $idQ        = proteger($idQuestion);
+    $contenuP   = proteger($contenu);
+    $estCorrectP = intval($estCorrect);
+    $ordreP     = intval($ordre);
+
+    $sql = "INSERT INTO quiz_reponses (id_question, contenu, est_correct, ordre)
+            VALUES ('$idQ', '$contenuP', '$estCorrectP', '$ordreP')";
+
+    return SQLInsert($sql);
+}
+
+
+/**
+ * Modifie une réponse existante
+ */
+function modifierReponse($idReponse, $contenu, $estCorrect) {
+    $idR        = proteger($idReponse);
+    $contenuP   = proteger($contenu);
+    $estCorrectP = intval($estCorrect);
+
+    $sql = "UPDATE quiz_reponses
+            SET contenu = '$contenuP', est_correct = '$estCorrectP'
+            WHERE id = '$idR'";
+
+    return SQLUpdate($sql);
+}
+
+
+/**
  * Verifie si une reponse est correcte (utilise a la soumission du quiz)
  */
 function estBonneReponse($idQuestion, $idReponse) {

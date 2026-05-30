@@ -1,4 +1,5 @@
 <?php
+require_once("libs/Parsedown.php"); // pour le markdown
 
 
 /**
@@ -127,4 +128,35 @@ if (basename($_SERVER["PHP_SELF"]) != "index.php")
 	die("");
 }
 */
+
+
+
+
+
+/**
+ * Traduit le Markdown de l'admin en composants "Style Carnet"
+ * @param string $texte Brut de la BDD
+ * @return string Code HTML exécutable
+ */
+function fichesMarkdownToHtml($texte) {
+    
+    $parsedown = new Parsedown();
+    
+    // Active le SafeMode pour bloquer les injections XSS de scripts malveillants (<script>)
+    // tout en laissant passer le Markdown et le HTML classique de confiance
+    $parsedown->setSafeMode(true); 
+    
+    // Génère le HTML officiel
+    $html = $parsedown->text($texte);
+
+    // Transformation magique pour appliquer tes classes CSS fluides (.pages.css)
+    $html = str_replace('<ul>', '<ul class="liste-mots-flex">', $html);
+    $html = str_replace('<li>', '<li class="mot-box">', $html);
+    
+    // Détection des éléments mis en gras pour les passer en Orange actif
+    $html = str_replace('<li class="mot-box"><strong>', '<li class="mot-box active">', $html);
+    $html = str_replace('</strong></li>', '</li>', $html);
+
+    return $html;
+}
 ?>

@@ -52,9 +52,13 @@ $question = $lignesQuestion[0];
     <?php if ($question['type'] === 'audio' && !empty($question['chemin_audio_question'])): ?>
         <audio id="lecteurQuiz" src="<?= htmlspecialchars($question['chemin_audio_question']) ?>" preload="auto"></audio>
 
-        <div class="audio-player" style="margin-bottom: 24px;">
-            <button class="audio-player-play" type="button" onclick="togglePlay('lecteurQuiz')">▶</button>
-            <span style="flex:1;">Extrait sonore à identifier</span>
+        <div class="audio-player-container">
+            <button id="btnPlay" class="audio-player-play" type="button" onclick="togglePlay('lecteurQuiz')">▶</button>
+            
+            <div class="audio-progress-bg">
+                <div id="barreProgression" class="audio-progress-fill" style="width: 0%;"></div>
+            </div>
+            
             <button class="btn btn-outline" type="button" onclick="rejouer('lecteurQuiz')">Rejouer</button>
         </div>
     <?php endif; ?>
