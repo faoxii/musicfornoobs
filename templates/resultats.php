@@ -5,7 +5,9 @@
  * Description : Interface 8 - Bilan du quiz
  */
 
-// Si la session bilan n'existe pas, c'est qu'on essaie d'accéder à la page illégalement
+// Le bilan est passé via session (pas en GET) pour éviter d'exposer les détails dans l'URL
+// et pour empêcher un rechargement de page de re-déclencher la soumission du quiz.
+// Si la session bilan est absente, c'est un accès direct non autorisé.
 if (!isset($_SESSION['quiz_bilan'])) {
     rediriger("index.php?view=quiz");
 }
@@ -13,45 +15,47 @@ if (!isset($_SESSION['quiz_bilan'])) {
 $bilan = $_SESSION['quiz_bilan'];
 ?>
 
-<div style="max-width: 800px; margin: 0 auto; text-align: center;">
-    
-    <h1 style="font-size: 80px; margin-bottom: 0;"><?= $bilan['score'] ?> <span style="font-size: 40px; color: var(--text-muted);">/ 5</span></h1>
-    <p class="annotation" style="margin-bottom: 32px;">
+<div class="resultats-wrapper">
+
+    <h1 class="resultats-score"><?= $bilan['score'] ?> <span class="resultats-score-denom">/ 5</span></h1>
+
+    <p class="annotation resultats-annotation">
         Points gagnés : <span class="highlight">+<?= $bilan['points_gagnes'] ?> pts</span>
     </p>
 
-    <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; text-align: left; padding: 24px;">
-        <h3 style="margin-bottom: 16px;">Détail des réponses</h3>
+    <div class="resultats-detail-card">
+        <h3>Détail des réponses</h3>
 
         <?php foreach ($bilan['details'] as $detail): ?>
             <div class="resultat-question <?= !$detail['est_bonne'] ? 'wrong' : '' ?>">
-                
+
                 <div class="resultat-icon <?= $detail['est_bonne'] ? 'correct' : 'incorrect' ?>">
                     <?= $detail['est_bonne'] ? '✓' : '✗' ?>
                 </div>
-                
-                <div style="flex: 1;">
-                    <strong style="display: block; margin-bottom: 4px;">Q<?= $detail['num'] ?> — <?= htmlspecialchars($detail['enonce']) ?></strong>
-                    
+
+                <div class="resultat-detail-body">
+                    <strong class="resultat-question-enonce">Q<?= $detail['num'] ?> — <?= htmlspecialchars($detail['enonce']) ?></strong>
+
                     <?php if ($detail['est_bonne']): ?>
-                        <span class="badge" style="background: var(--success); color: white; border-color: var(--success);">
+                        <span class="badge badge-correct">
                             <?= htmlspecialchars($detail['user_txt']) ?>
                         </span>
                     <?php else: ?>
-                        <span class="badge reponse-barree" style="background: white; border-color: var(--error);">
+                        <span class="badge reponse-barree badge-wrong">
                             <?= htmlspecialchars($detail['user_txt']) ?>
                         </span>
-                        <span style="margin: 0 8px;">→</span>
-                        <span class="badge" style="background: var(--success); color: white; border-color: var(--success);">
+                        <span class="resultat-arrow">→</span>
+                        <span class="badge badge-correct">
                             <?= htmlspecialchars($detail['correct_txt']) ?>
                         </span>
                     <?php endif; ?>
                 </div>
+
             </div>
         <?php endforeach; ?>
     </div>
 
-    <div style="margin-top: 32px; display: flex; gap: 16px; justify-content: center;">
+    <div class="resultats-actions">
         <a href="index.php?view=quiz" class="btn btn-outline">← Retour au catalogue</a>
         <a href="index.php?view=classement" class="btn btn-primary">Voir le classement →</a>
     </div>

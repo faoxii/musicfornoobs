@@ -64,18 +64,19 @@ $nbQuizTotal = count($tousQuizzes);
 
         <div class="catalogue-header">
             <h1 class="page-titre-custom">Quiz &mdash; <span class="highlight"><?= htmlspecialchars($nomCatActive) ?></span></h1>
-            <div style="width: 200px;"></div>
+            <input type="text" id="searchQuiz" placeholder="🔍 Rechercher..."
+                   class="search-input-custom" oninput="filtrerCatalogue('searchQuiz', 'quizCatalogue', 'noResultsQuiz')">
         </div>
 
-        <div class="fiches-grid-2">
+        <div id="quizCatalogue" class="fiches-grid-2">
             <?php if (empty($quizzes)): ?>
-                <p>Aucun quiz trouvé pour ces critères.</p>
+                <p>Aucun quiz pour ces filtres.</p>
             <?php else: ?>
                 <?php foreach ($quizzes as $q): ?>
-                    <div class="card-fiche-custom">
+                    <div class="card-fiche-custom" data-titre="<?= strtolower(htmlspecialchars($q['titre'])) ?>">
 
-                        <div style="margin-bottom: 16px;">
-                            <span class="badge-cat-custom" style="background-color: <?= htmlspecialchars($q['couleur']) ?>;">
+                        <div class="card-badges-top">
+                            <span class="badge badge--thick" style="background-color: <?= htmlspecialchars($q['couleur']) ?>;">
                                 <?= htmlspecialchars($q['categorie']) ?>
                             </span>
                         </div>
@@ -87,10 +88,13 @@ $nbQuizTotal = count($tousQuizzes);
                         </div>
 
                         <div class="card-actions-custom">
-                            <a href="index.php?view=quiz_play&slug=<?= htmlspecialchars($q['slug']) ?>" class="btn-custom btn-orange" style="width: 100%;">Commencer →</a>
+                            <a href="index.php?view=quiz_play&slug=<?= htmlspecialchars($q['slug']) ?>" class="btn-custom btn-orange">Commencer →</a>
                         </div>
                     </div>
                 <?php endforeach; ?>
+                <p id="noResultsQuiz" class="catalogue-no-results" style="display:none">
+                    Aucun quiz ne correspond à votre recherche.
+                </p>
             <?php endif; ?>
         </div>
     </div>

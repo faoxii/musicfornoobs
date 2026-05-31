@@ -312,3 +312,5 @@ a:hover {
     margin-top: 10px;
     margin-bottom: 0px;
 }
+
+.hidden { display: none; }

@@ -6,7 +6,7 @@
  */
 
 $classement = getClassement(20);
-$rangUser   = getRang($_SESSION['idUser']);
+$rangUser   = getRang(valider('idUser', 'SESSION'));
 ?>
 
 <div class="classement-wrapper">
@@ -25,7 +25,7 @@ $rangUser   = getRang($_SESSION['idUser']);
             <?php foreach ($classement as $index => $joueur): ?>
                 <?php
                     $rang    = $index + 1;
-                    $estVous = ($joueur['login'] === $_SESSION['login']);
+                    $estVous = ($joueur['login'] === valider('login', 'SESSION'));
                 ?>
 
                 <div class="classement-ligne <?= $estVous ? 'vous' : '' ?>">

@@ -2,13 +2,14 @@
 /*
  * Fichier : templates/quiz_play.php
  * Auteur  : LEFEBVRE Lucas
- * Description : Interface 7 - Deroulement du quiz (1 question a la fois)
+ * Description : Interface 7 - Déroulement du quiz, une question à la fois
  */
 
 $slug = valider("slug", "GET");
 if (!$slug) rediriger("index.php?view=quiz");
 
-// 1. Initialisation session si premiere question
+// On initialise la session quiz uniquement si l'utilisateur commence un nouveau quiz
+// (slug différent du quiz en cours) — relancer la même URL en cours de quiz ne remet pas à zéro
 if (!isset($_SESSION["quiz_slug"]) || $_SESSION["quiz_slug"] !== $slug) {
     $_SESSION["quiz_slug"]     = $slug;
     $_SESSION["quiz_etape"]    = 1;
@@ -17,26 +18,27 @@ if (!isset($_SESSION["quiz_slug"]) || $_SESSION["quiz_slug"] !== $slug) {
 
 $etape = $_SESSION["quiz_etape"];
 
-// 2. Securite : si etape > 5 (ne devrait pas arriver), on redirige
+// Guard : etape > 5 ne devrait jamais arriver en navigation normale,
+// mais protège contre un rechargement de page après la dernière question
 if ($etape > 5) {
     rediriger("index.php?view=quiz");
 }
 
-// 3. Recuperation de la fiche et de la question
 $fiche = getFicheParSlug($slug);
 if (!$fiche) rediriger("index.php?view=quiz");
 
+// getQuestion retourne 4 lignes (une par réponse), pas un objet structuré
 $lignesQuestion = getQuestion($fiche['id'], $etape);
 if (empty($lignesQuestion)) rediriger("index.php?view=quiz");
 
 $question = $lignesQuestion[0];
 ?>
 
-<div style="max-width: 800px; margin: 0 auto; background: var(--bg-card); padding: 32px; border: 1px solid var(--border); border-radius: 12px;">
+<div class="quiz-play-wrapper">
 
     <span class="annotation">QUESTION <?= $etape ?> / 5</span>
 
-    <div class="quiz-progress" style="margin-top: 8px;">
+    <div class="quiz-progress">
         <?php for ($i = 1; $i <= 5; $i++): ?>
             <?php
                 $class = "";
@@ -47,18 +49,18 @@ $question = $lignesQuestion[0];
         <?php endfor; ?>
     </div>
 
-    <h2 style="margin: 24px 0;"><?= htmlspecialchars($question['enonce']) ?></h2>
+    <h2 class="quiz-question-titre"><?= htmlspecialchars($question['enonce']) ?></h2>
 
     <?php if ($question['type'] === 'audio' && !empty($question['chemin_audio_question'])): ?>
         <audio id="lecteurQuiz" src="<?= htmlspecialchars($question['chemin_audio_question']) ?>" preload="auto"></audio>
 
         <div class="audio-player-container">
             <button id="btnPlay" class="audio-player-play" type="button" onclick="togglePlay('lecteurQuiz')">▶</button>
-            
+
             <div class="audio-progress-bg">
-                <div id="barreProgression" class="audio-progress-fill" style="width: 0%;"></div>
+                <div id="barreProgression" class="audio-progress-fill"></div>
             </div>
-            
+
             <button class="btn btn-outline" type="button" onclick="rejouer('lecteurQuiz')">Rejouer</button>
         </div>
     <?php endif; ?>
@@ -75,13 +77,13 @@ $question = $lignesQuestion[0];
         foreach ($lignesQuestion as $index => $rep):
         ?>
             <label class="reponse-quiz">
-                <input type="radio" name="reponse" value="<?= $rep['id_reponse'] ?>" style="transform: scale(1.5); margin-right: 12px;" required>
+                <input type="radio" name="reponse" value="<?= $rep['id_reponse'] ?>" required>
                 <span class="reponse-quiz-letter"><?= $lettres[$index] ?> -</span>
-                <span style="font-size: 20px; font-weight: bold;"><?= htmlspecialchars($rep['contenu']) ?></span>
+                <span class="reponse-quiz-text"><?= htmlspecialchars($rep['contenu']) ?></span>
             </label>
         <?php endforeach; ?>
 
-        <div style="text-align: right; margin-top: 24px;">
+        <div class="quiz-form-actions">
             <button type="submit" class="btn btn-primary">Valider →</button>
         </div>
     </form>

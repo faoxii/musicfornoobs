@@ -2,13 +2,15 @@
 /*
  * Fichier : libs/modele/modele_quiz.php
  * Auteur  : LEFEBVRE Lucas
- * Description : fonctions d'acces aux tables quiz_questions et quiz_reponses
+ * Description : fonctions d'accès aux tables quiz_questions et quiz_reponses
  */
 
 
 /**
- * Renvoie les fiches qui ont un quiz pret (5+ questions)
- * Pour le catalogue des quiz
+ * Renvoie les fiches qui ont un quiz jouable (au moins 5 questions).
+ * On utilise HAVING plutôt que WHERE pour filtrer sur nb_questions : WHERE ne peut pas
+ * utiliser un alias de colonne calculé par COUNT, et il s'exécute avant le GROUP BY.
+ * HAVING s'exécute après, ce qui permet de filtrer sur le résultat de l'agrégation.
  */
 function getQuizDisponibles($idCategorie = false, $niveau = false) {
     $sql = "SELECT
@@ -23,12 +25,13 @@ function getQuizDisponibles($idCategorie = false, $niveau = false) {
             JOIN categories c ON f.id_categorie = c.id
             LEFT JOIN quiz_questions q ON q.id_fiche = f.id";
 
-    if ($idCategorie !== false && $niveau !== false)
+    if ($idCategorie !== false && $niveau !== false) {
         $sql .= " WHERE f.id_categorie = '$idCategorie' AND f.niveau = '$niveau'";
-    else if ($idCategorie !== false)
+    } elseif ($idCategorie !== false) {
         $sql .= " WHERE f.id_categorie = '$idCategorie'";
-    else if ($niveau !== false)
+    } elseif ($niveau !== false) {
         $sql .= " WHERE f.niveau = '$niveau'";
+    }
 
     $sql .= " GROUP BY f.id, f.titre, f.slug, f.niveau, c.nom, c.couleur
               HAVING nb_questions >= 5
@@ -39,8 +42,11 @@ function getQuizDisponibles($idCategorie = false, $niveau = false) {
 
 
 /**
- * Renvoie une question + ses 4 reponses (pour le deroulement du quiz)
- * $numeroQuestion entre 1 et 5
+ * Renvoie une question avec ses 4 réponses pour le déroulement du quiz.
+ * La requête retourne 4 lignes (une par réponse), pas un tableau structuré :
+ * c'est le contrôleur et le template qui itèrent dessus.
+ * Important : est_correct ne doit jamais être envoyé au navigateur — il n'est
+ * utilisé qu'en PHP côté serveur lors de la soumission.
  */
 function getQuestion($idFiche, $numeroQuestion) {
     $sql = "SELECT
@@ -63,8 +69,9 @@ function getQuestion($idFiche, $numeroQuestion) {
 
 
 /**
- * Renvoie toutes les questions d'une fiche (pour l'admin)
- * IMPORTANT : a livrer tot, Mathis en a besoin pour l'interface 13
+ * Renvoie toutes les questions d'une fiche avec leurs réponses.
+ * Retourne plusieurs lignes par question (une par réponse) — le template admin
+ * regroupe ensuite par id_question pour construire l'affichage.
  */
 function getQuestionsFiche($idFiche) {
     $sql = "SELECT
@@ -87,7 +94,8 @@ function getQuestionsFiche($idFiche) {
 
 
 /**
- * Renvoie une question depuis son id (avec ses 4 reponses)
+ * Renvoie une question depuis son id avec ses 4 réponses.
+ * Utilisé dans le formulaire d'édition admin pour pré-remplir le formulaire.
  */
 function getQuestion_id($idQuestion) {
     $sql = "SELECT
@@ -110,8 +118,8 @@ function getQuestion_id($idQuestion) {
 
 
 /**
- * Cree une nouvelle question avec ses 4 reponses
- * $reponses = tableau de 4 elements [['contenu' => ..., 'est_correct' => 0/1], ...]
+ * Crée une question et renvoie son id.
+ * Les réponses sont créées séparément via creerReponse().
  */
 function creerQuestion($idFiche, $type, $enonce, $cheminAudio, $ordre) {
     $valAudio = ($cheminAudio !== null) ? "'$cheminAudio'" : "NULL";
@@ -124,7 +132,8 @@ function creerQuestion($idFiche, $type, $enonce, $cheminAudio, $ordre) {
 
 
 /**
- * Modifie une question existante (supprime puis recree les reponses)
+ * Met à jour une question existante.
+ * Passer null à $cheminAudio met le champ à NULL en BDD (suppression de l'audio).
  */
 function modifierQuestion($idQuestion, $type, $enonce, $cheminAudio) {
     $valAudio = ($cheminAudio !== null) ? "'$cheminAudio'" : "NULL";
@@ -138,22 +147,25 @@ function modifierQuestion($idQuestion, $type, $enonce, $cheminAudio) {
 
 
 /**
- * Supprime une question (cascade les reponses)
+ * Supprime une question. Ses réponses sont supprimées en cascade par la BDD.
  */
 function supprimerQuestion($idQuestion) {
     $sql = "DELETE FROM quiz_questions WHERE id = '$idQuestion'";
+
     return SQLDelete($sql);
 }
 
 
 /**
- * Crée une réponse pour une question
+ * Crée une réponse pour une question.
+ * $ordre va de 1 à 4 (correspond aux choix A, B, C, D).
+ * $estCorrect vaut 1 pour la bonne réponse, 0 pour les fausses.
  */
 function creerReponse($idQuestion, $contenu, $estCorrect, $ordre) {
-    $idQ        = proteger($idQuestion);
-    $contenuP   = proteger($contenu);
+    $idQ         = proteger($idQuestion);
+    $contenuP    = proteger($contenu);
     $estCorrectP = intval($estCorrect);
-    $ordreP     = intval($ordre);
+    $ordreP      = intval($ordre);
 
     $sql = "INSERT INTO quiz_reponses (id_question, contenu, est_correct, ordre)
             VALUES ('$idQ', '$contenuP', '$estCorrectP', '$ordreP')";
@@ -163,11 +175,11 @@ function creerReponse($idQuestion, $contenu, $estCorrect, $ordre) {
 
 
 /**
- * Modifie une réponse existante
+ * Met à jour le texte et le statut correct/incorrect d'une réponse existante.
  */
 function modifierReponse($idReponse, $contenu, $estCorrect) {
-    $idR        = proteger($idReponse);
-    $contenuP   = proteger($contenu);
+    $idR         = proteger($idReponse);
+    $contenuP    = proteger($contenu);
     $estCorrectP = intval($estCorrect);
 
     $sql = "UPDATE quiz_reponses
@@ -175,19 +187,6 @@ function modifierReponse($idReponse, $contenu, $estCorrect) {
             WHERE id = '$idR'";
 
     return SQLUpdate($sql);
-}
-
-
-/**
- * Verifie si une reponse est correcte (utilise a la soumission du quiz)
- */
-function estBonneReponse($idQuestion, $idReponse) {
-    $sql = "SELECT est_correct
-            FROM quiz_reponses
-            WHERE id = '$idReponse'
-              AND id_question = '$idQuestion'";
-
-    return SQLGetChamp($sql);
 }
 
 ?>

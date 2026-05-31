@@ -5,8 +5,8 @@
  * Description : Interface 9 - Tableau de bord utilisateur
  */
 
-$idUser    = $_SESSION['idUser'];
-$login     = $_SESSION['login'];
+$idUser = valider('idUser',  'SESSION');
+$login  = valider('login',   'SESSION');
 
 $infos       = getUtilisateur($idUser);
 $infos       = $infos[0];
@@ -74,7 +74,7 @@ $initiales = strtoupper(substr($login, 0, 2));
         <div class="activite-table">
             <?php foreach ($activite as $index => $item): ?>
                 <div class="activite-ligne <?= $index < count($activite) - 1 ? 'activite-ligne--border' : '' ?>">
-                    <span class="badge-cat-custom" style="background-color: <?= htmlspecialchars($item['couleur']) ?>;">
+                    <span class="badge badge--thick" style="background-color: <?= htmlspecialchars($item['couleur']) ?>;">
                         <?= htmlspecialchars($item['categorie']) ?>
                     </span>
                     <span class="activite-titre"><?= htmlspecialchars($item['titre']) ?></span>

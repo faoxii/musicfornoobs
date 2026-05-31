@@ -101,24 +101,26 @@ $titrePage   = $modeEdition ? 'Modifier la fiche' : 'Nouvelle fiche';
                     <span class="annotation">// markdown supporté</span>
                 </label>
 
-                <!-- Toolbar -->
-                <div class="md-toolbar">
-                    <button type="button" class="md-btn" onclick="insererMd('**', '**')" title="Gras"><strong>B</strong></button>
-                    <button type="button" class="md-btn" onclick="insererMd('*', '*')"   title="Italique"><em>I</em></button>
-                    <button type="button" class="md-btn" onclick="insererMd('## ', '')"  title="Titre H2">H2</button>
-                    <button type="button" class="md-btn" onclick="insererListe()"        title="Liste">· liste</button>
-                    <button type="button" class="md-btn" onclick="insererMd('> ', '')"   title="Citation">&gt; citation</button>
-                    <button type="button" class="md-btn" onclick="insererMd('`', '`')"   title="Code">&lt;/&gt; code</button>
-                </div>
+                <!-- Toolbar + Textarea dans un seul bloc sans gap -->
+                <div class="md-editor-wrapper">
+                    <div class="md-toolbar">
+                        <button type="button" class="md-btn" onclick="insererMd('**', '**')" title="Gras"><strong>B</strong></button>
+                        <button type="button" class="md-btn" onclick="insererMd('*', '*')"   title="Italique"><em>I</em></button>
+                        <button type="button" class="md-btn" onclick="insererMd('## ', '')"  title="Titre H2">H2</button>
+                        <button type="button" class="md-btn" onclick="insererListe()"        title="Liste">· liste</button>
+                        <button type="button" class="md-btn" onclick="insererMd('> ', '')"   title="Citation">&gt; citation</button>
+                        <button type="button" class="md-btn" onclick="insererMd('`', '`')"   title="Code">&lt;/&gt; code</button>
+                    </div>
 
-                <textarea
-                    id="contenu"
-                    name="contenu"
-                    class="admin-form-textarea admin-form-textarea--md"
-                    placeholder="Décris la notion : définition, exemples, schéma... Tu peux structurer en sections avec ## titres et insérer du gras avec **texte**."
-                    oninput="compterCaracteres(this)"
-                    required
-                ><?= $modeEdition ? htmlspecialchars($fiche['contenu']) : '' ?></textarea>
+                    <textarea
+                        id="contenu"
+                        name="contenu"
+                        class="admin-form-textarea admin-form-textarea--md"
+                        placeholder="Décris la notion : définition, exemples, schéma... Tu peux structurer en sections avec ## titres et insérer du gras avec **texte**."
+                        oninput="compterCaracteres(this)"
+                        required
+                    ><?= $modeEdition ? htmlspecialchars($fiche['contenu']) : '' ?></textarea>
+                </div>
 
                 <div class="admin-char-count">
                     <span id="charCount"><?= $modeEdition ? strlen($fiche['contenu']) : 0 ?></span> / 4000 caractères
@@ -146,7 +148,7 @@ $titrePage   = $modeEdition ? 'Modifier la fiche' : 'Nouvelle fiche';
                     <div class="admin-dropzone-icon-circle">&#8593;</div>
                     <div class="admin-dropzone-body">
                         <strong>Glisse ton fichier ici ou clique pour parcourir</strong>
-                        <span class="annotation" style="display:block; margin-top:2px;">// formats acceptés : MP3 — taille max 5 Mo</span>
+                        <span class="annotation">// formats acceptés : MP3 — taille max 5 Mo</span>
                         <span id="nomFichierChoisi" class="admin-dropzone-filename"></span>
                     </div>
                     <button type="button" class="btn-custom btn-white admin-dropzone-btn"
@@ -154,7 +156,7 @@ $titrePage   = $modeEdition ? 'Modifier la fiche' : 'Nouvelle fiche';
                         Choisir un fichier
                     </button>
                     <input type="file" id="fichier_audio" name="fichier_audio" accept="audio/*"
-                           style="display:none" onchange="afficherNomFichier(this)">
+                           class="hidden" onchange="afficherNomFichier(this)">
                 </div>
             </div>
 
@@ -176,15 +178,23 @@ function compterCaracteres(elt) {
 }
 
 // Insère la syntaxe markdown à la position du curseur (ex: ** et ** pour le gras)
+// Si du texte est sélectionné, il est enveloppé dans les marqueurs.
+// execCommand intègre l'action dans l'historique undo → Ctrl+Z annule tout d'un coup.
 function insererMd(avant, apres) {
-    const elt = document.getElementById('contenu');
-    const pos = elt.selectionStart;
+    const elt            = document.getElementById('contenu');
+    const debut          = elt.selectionStart;
+    const selection      = elt.value.substring(debut, elt.selectionEnd);
+    const avaitSelection = selection.length > 0;
 
-    // Insère avant+apres au curseur et place le curseur entre les deux
-    elt.value = elt.value.substring(0, pos) + avant + apres + elt.value.substring(pos);
-    elt.selectionStart = pos + avant.length;
-    elt.selectionEnd   = pos + avant.length;
     elt.focus();
+    document.execCommand('insertText', false, avant + selection + apres);
+
+    // Si rien n'était sélectionné, on repositionne le curseur entre les marqueurs
+    if (!avaitSelection) {
+        const nouvellePos = debut + avant.length;
+        elt.setSelectionRange(nouvellePos, nouvellePos);
+    }
+
     compterCaracteres(elt);
 }
 

@@ -5,13 +5,12 @@
  * Description : Interface 4 - Catalogue des fiches
  */
 
-$catUrl    = valider("cat", "GET");
-$nivUrl    = valider("niveau", "GET");
-$searchUrl = valider("search", "GET");
+$catUrl = valider("cat", "GET");
+$nivUrl = valider("niveau", "GET");
 
-$categories = getCategoriesAvecCompteurs();
-$fiches     = getFiches($catUrl, $nivUrl, $searchUrl);
-$toutesfiches = getFiches(); // pour le total sans filtre
+$categories   = getCategoriesAvecCompteurs();
+$fiches       = getFiches($catUrl, $nivUrl);
+$toutesfiches = getFiches();
 
 // On cherche le nom de la catégorie sélectionnée pour le titre
 $nomCatActive = 'Toutes';
@@ -57,27 +56,25 @@ $nbFichesTotal = count($toutesfiches);
         
         <div class="catalogue-header">
             <h1 class="page-titre-custom">
-                Fiches &mdash; 
+                Fiches &mdash;
                 <span class="highlight"><?= htmlspecialchars($nomCatActive) ?></span>
             </h1>
-            <form method="GET" action="index.php" class="search-form">
-                <input type="hidden" name="view" value="fiches">
-                <input type="text" name="search" placeholder="🔍 Rechercher..." value="<?= htmlspecialchars($searchUrl) ?>" class="search-input-custom">
-            </form>
+            <input type="text" id="searchFiches" placeholder="🔍 Rechercher..."
+                   class="search-input-custom" oninput="filtrerCatalogue('searchFiches', 'fichesCatalogue', 'noResultsFiches')">
         </div>
-        
-        <div class="fiches-grid-2">
+
+        <div id="fichesCatalogue" class="fiches-grid-2">
             <?php if (empty($fiches)): ?>
-                <p>Aucune fiche trouvée pour ces critères.</p>
+                <p>Aucune fiche pour ces filtres.</p>
             <?php else: ?>
                 <?php foreach ($fiches as $f): ?>
-                    <div class="card-fiche-custom">
+                    <div class="card-fiche-custom" data-titre="<?= strtolower(htmlspecialchars($f['titre'])) ?>">
                         
-                        <div style="margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center;">
-                            <span class="badge-cat-custom" style="background-color: <?= htmlspecialchars($f['couleur']) ?>;">
+                        <div class="card-badges-top">
+                            <span class="badge badge--thick" style="background-color: <?= htmlspecialchars($f['couleur']) ?>;">
                                 <?= htmlspecialchars($f['categorie']) ?>
                             </span>
-                            <?php if (isset($_SESSION['idUser']) && estFicheLue($_SESSION['idUser'], $f['id'])): ?>
+                            <?php if (valider('idUser', 'SESSION') && estFicheLue(valider('idUser', 'SESSION'), $f['id'])): ?>
                                 <span class="badge-lu">✓ Lu</span>
                             <?php endif; ?>
                         </div>
@@ -85,7 +82,7 @@ $nbFichesTotal = count($toutesfiches);
                         <h3 class="card-titre-custom"><?= htmlspecialchars($f['titre']) ?></h3>
                         
                         <div class="card-niveau-container">
-                            <span class="badge-niveau-custom">
+                            <span class="badge badge--thick">
                                 <?= htmlspecialchars($f['niveau']) ?>
                             </span>
                         </div>
@@ -96,6 +93,9 @@ $nbFichesTotal = count($toutesfiches);
                         </div>
                     </div>
                 <?php endforeach; ?>
+                <p id="noResultsFiches" class="catalogue-no-results" style="display:none">
+                    Aucune fiche ne correspond à votre recherche.
+                </p>
             <?php endif; ?>
         </div>
     </div>

@@ -19,20 +19,23 @@ if (!$fiche) {
 // Récupère toutes les questions avec leurs réponses
 $lignes = getQuestionsFiche($idFiche);
 
-// Regroupe les lignes par question (chaque question a 4 réponses)
+// getQuestionsFiche retourne plusieurs lignes par question (une par réponse).
+// On regroupe ici en tableau indexé par id_question pour simplifier l'affichage.
 $questions = [];
 foreach ($lignes as $l) {
     $idQ = $l['id_question'];
+
     if (!isset($questions[$idQ])) {
         $questions[$idQ] = [
-            'id'            => $idQ,
-            'enonce'        => $l['enonce'],
-            'type'          => $l['type'],
-            'chemin_audio'  => $l['chemin_audio_question'],
-            'ordre'         => $l['ordre_question'],
-            'reponses'      => [],
+            'id'           => $idQ,
+            'enonce'       => $l['enonce'],
+            'type'         => $l['type'],
+            'chemin_audio' => $l['chemin_audio_question'],
+            'ordre'        => $l['ordre_question'],
+            'reponses'     => [],
         ];
     }
+
     $questions[$idQ]['reponses'][] = [
         'id'          => $l['id_reponse'],
         'contenu'     => $l['contenu'],
@@ -72,7 +75,7 @@ $nbQuestions = count($questions);
 
     <!-- LISTE DES QUESTIONS -->
     <?php if (empty($questions)): ?>
-        <div class="admin-empty" style="margin-top: 32px;">
+        <div class="admin-empty">
             Aucune question pour cette fiche. Cliquez sur "Nouvelle question" pour commencer.
         </div>
 
@@ -86,7 +89,7 @@ $nbQuestions = count($questions);
                         <h3 class="admin-q-enonce"><?= htmlspecialchars($q['enonce']) ?></h3>
                         <div class="admin-q-actions">
                             <a href="index.php?view=admin_question_form&fiche_id=<?= $idFiche ?>&question_id=<?= $q['id'] ?>"
-                               class="admin-btn-action admin-btn-modifier">
+                               class="admin-btn-action">
                                 &#9998; Éditer
                             </a>
                             <a href="controleur.php?action=SupprimerQuestion&id=<?= $q['id'] ?>&fiche_id=<?= $idFiche ?>"

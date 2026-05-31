@@ -153,7 +153,7 @@ $titrePage = $modeEdition ? 'Modifier la question' : 'Nouvelle question';
                     <div class="admin-dropzone-icon-circle">&#8593;</div>
                     <div class="admin-dropzone-body">
                         <strong>Glisse ton fichier ici ou clique pour parcourir</strong>
-                        <span class="annotation" style="display:block; margin-top:2px;">// formats acceptés : MP3 — taille max 5 Mo</span>
+                        <span class="annotation">// formats acceptés : MP3 — taille max 5 Mo</span>
                         <span id="nomFichierQuestion" class="admin-dropzone-filename"></span>
                     </div>
                     <button type="button" class="btn-custom btn-white admin-dropzone-btn"
@@ -161,7 +161,7 @@ $titrePage = $modeEdition ? 'Modifier la question' : 'Nouvelle question';
                         Choisir un fichier
                     </button>
                     <input type="file" id="fichier_audio_question" name="fichier_audio_question"
-                           accept="audio/*" style="display:none"
+                           accept="audio/*" class="hidden"
                            onchange="afficherNomFichier(this, 'nomFichierQuestion')">
                 </div>
             </div>
@@ -169,7 +169,7 @@ $titrePage = $modeEdition ? 'Modifier la question' : 'Nouvelle question';
         </div><!-- /.admin-form-card -->
 
         <!-- SECTION 2 : Réponses -->
-        <div class="admin-form-card" style="margin-top: 20px;">
+        <div class="admin-form-card">
 
             <div class="admin-form-section-header">
                 <span class="admin-form-section-num">2</span>
@@ -209,7 +209,7 @@ $titrePage = $modeEdition ? 'Modifier la question' : 'Nouvelle question';
         </div><!-- /.admin-form-card -->
 
         <!-- ACTIONS -->
-        <div class="admin-form-actions" style="margin-top: 20px;">
+        <div class="admin-form-actions">
             <a href="index.php?view=admin_questions&fiche_id=<?= $idFiche ?>" class="btn-custom btn-white">Annuler</a>
             <button type="submit" class="btn-custom btn-orange">Enregistrer</button>
         </div>

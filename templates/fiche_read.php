@@ -2,25 +2,20 @@
 /*
  * Fichier : templates/fiche_read.php
  * Auteurs : LEFEBVRE Lucas / BOURGUIGNON Mathis
- * Date    : 2026-05-30
- * Description : Interface 5 - Affichage détaillé d'une fiche pédagogique (Code épuré)
+ * Description : Interface 5 - Affichage détaillé d'une fiche pédagogique
  */
 
 $slug = valider("slug", "GET");
-
-if (!$slug) {
-    rediriger("index.php?view=fiches");
-}
+if (!$slug) rediriger("index.php?view=fiches");
 
 $fiche = getFicheParSlug($slug);
+if (!$fiche) rediriger("index.php?view=fiches");
 
-if (!$fiche) {
-    rediriger("index.php?view=fiches");
-}
-
-// Marquer comme lue automatiquement à l'ouverture
-if (isset($_SESSION['idUser'])) {
-    marquerFicheLue($_SESSION['idUser'], $fiche['id']);
+// La lecture est enregistrée automatiquement à l'ouverture de la page, sans bouton :
+// on fait confiance au fait que l'utilisateur a vu le contenu s'il a navigué jusqu'ici.
+// marquerFicheLue utilise INSERT IGNORE, donc ouvrir la fiche plusieurs fois ne duplique pas.
+if (valider('idUser', 'SESSION')) {
+    marquerFicheLue(valider('idUser', 'SESSION'), $fiche['id']);
 }
 ?>
 
@@ -33,10 +28,10 @@ if (isset($_SESSION['idUser'])) {
     </div>
 
     <div class="fiche-badges-container">
-        <span class="badge-cat-custom" style="background-color: <?= htmlspecialchars($fiche['couleur']) ?>;">
+        <span class="badge badge--thick" style="background-color: <?= htmlspecialchars($fiche['couleur']) ?>;">
             <?= htmlspecialchars($fiche['categorie']) ?>
         </span>
-        <span class="badge-niveau-custom">
+        <span class="badge badge--thick">
             <?= htmlspecialchars($fiche['niveau']) ?>
         </span>
     </div>
@@ -52,18 +47,18 @@ if (isset($_SESSION['idUser'])) {
     <?php if (!empty($fiche['chemin_audio'])): ?>
         <div class="fiche-section-audio">
             <h2>Écoute</h2>
-            
+
             <audio id="lecteurFiche" src="<?= htmlspecialchars($fiche['chemin_audio']) ?>" preload="auto"></audio>
 
             <div class="audio-player fiche-audio-custom">
                 <button id="btnPlay" class="audio-player-play" type="button" onclick="togglePlay('lecteurFiche')">▶</button>
-                
+
                 <div class="audio-progress-bg">
                     <div id="barreProgression" class="audio-progress-fill"></div>
                 </div>
-                
+
                 <div class="audio-time-label">0:00 / --:--</div>
-                
+
                 <button class="btn btn-outline btn-rejouer-custom" type="button" onclick="rejouer('lecteurFiche')">
                     Rejouer
                 </button>

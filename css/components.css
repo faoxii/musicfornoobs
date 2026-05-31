@@ -59,26 +59,11 @@
     border: 1px solid;
 }
 
-.badge-gammes      { background: var(--cat-gammes);      color: white; border-color: var(--cat-gammes); }
-.badge-accords     { background: var(--cat-accords);     color: white; border-color: var(--cat-accords); }
-.badge-intervalles { background: var(--cat-intervalles); color: white; border-color: var(--cat-intervalles); }
-
-.badge-niveau {
-    background: var(--bg);
-    color: var(--text-muted);
-    border-color: var(--border);
-}
-
-.badge-etat-lue {
-    background: var(--success);
-    color: white;
-    border-color: var(--success);
-}
-
-.badge-etat-non-lue {
-    background: var(--bg);
-    color: var(--text-muted);
-    border-color: var(--border);
+.badge--thick {
+    border: 2px solid var(--text);
+    border-radius: 12px;
+    font-weight: bold;
+    font-size: 14px;
 }
 
 
@@ -88,37 +73,6 @@
     border: 1px solid var(--border);
     border-radius: 12px;
     padding: 24px;
-}
-
-.card-fiche {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.card-fiche-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.card-fiche-titre {
-    font-family: var(--font-title);
-    font-size: 24px;
-    margin: 8px 0;
-}
-
-.card-fiche-actions {
-    display: flex;
-    gap: 8px;
-}
-
-.card-fiche-actions .btn {
-    flex: 1;
 }
 
 
@@ -206,26 +160,6 @@ label > span {
 .sidebar-filtres h3 {
     font-size: 20px;
     margin-bottom: 12px;
-}
-
-.filter-btn {
-    display: block;
-    width: 100%;
-    padding: 10px 16px;
-    margin-bottom: 8px;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--font-body);
-    text-align: left;
-    cursor: pointer;
-}
-
-.filter-btn.active {
-    background: var(--accent);
-    color: white;
-    border-color: var(--accent);
 }
 
 
@@ -364,49 +298,7 @@ label > span {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
-}
-
-.badge-cat-custom {
-    border: 2px solid var(--text);
-    border-radius: 12px;
-    padding: 4px 12px;
-    font-weight: bold;
-    font-family: var(--font-body);
-}
-
-.badge-etat-custom {
-    background: var(--border);
-    border: 2px solid var(--text);
-    border-radius: 12px;
-    padding: 4px 12px;
-    color: var(--text);
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-family: var(--font-body);
-}
-
-.dot-non-lue {
-    width: 8px;
-    height: 8px;
-    background-color: #9CA3AF;
-    border-radius: 50%;
-    display: inline-block;
-}
-
-.card-decoration {
-    border: 2px dashed #9CA3AF;
-    border-radius: 8px;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 20px;
-    color: #9CA3AF;
-    font-family: var(--font-mono);
-    font-size: 12px;
+    margin-bottom: 16px;
 }
 
 .card-titre-custom {
@@ -418,14 +310,6 @@ label > span {
 
 .card-niveau-container {
     margin-bottom: 24px;
-}
-
-.badge-niveau-custom {
-    border: 2px solid var(--text);
-    border-radius: 12px;
-    padding: 4px 12px;
-    font-size: 14px;
-    font-family: var(--font-body);
 }
 
 /* --- BOUTONS D'ACTION CARTE --- */
@@ -477,38 +361,13 @@ label > span {
 .admin-btn-action:hover {
     transform: translateY(-1px);
 }
- 
-.admin-btn-modifier  { background: var(--bg-card); }
-.admin-btn-questions { background: var(--bg-card); }
-.admin-btn-delete    { background: var(--bg-card); color: var(--error); border-color: var(--error); }
- 
-/* Badges dans le tableau admin */
-.admin-badge-cat {
-    display: inline-block;
-    padding: 4px 12px;
-    border: 2px solid var(--text);
-    border-radius: 8px;
-    font-family: var(--font-body);
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--text);
-}
 
-/* Couleur par catégorie */
-.admin-badge-cat[data-cat="Gammes"]     { background: var(--cat-gammes); }
-.admin-badge-cat[data-cat="Accords"]    { background: var(--cat-accords); }
-.admin-badge-cat[data-cat="Intervalles"]{ background: var(--cat-intervalles); }
-
-.admin-badge-niveau {
-    display: inline-block;
-    padding: 4px 12px;
-    border: 2px solid var(--text);
-    border-radius: 8px;
-    font-family: var(--font-body);
-    font-size: 14px;
-    background: var(--bg-card);
-    color: var(--text);
-}
+.admin-btn-delete { color: var(--error); border-color: var(--error); }
+ 
+/* Couleurs de catégorie pour les badges admin (via data-cat) */
+.badge--thick[data-cat="Gammes"]     { background: var(--cat-gammes); }
+.badge--thick[data-cat="Accords"]    { background: var(--cat-accords); }
+.badge--thick[data-cat="Intervalles"]{ background: var(--cat-intervalles); }
 
 
 .admin-check { color: var(--success); font-size: 18px; font-weight: 700; }

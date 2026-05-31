@@ -66,11 +66,11 @@ $fiches     = getFichesDetaillees();
                             </td>
 
                             <td class="col-cat">
-                                <span class="admin-badge-cat" data-cat="<?= htmlspecialchars($f['categorie']) ?>"><?= htmlspecialchars($f['categorie']) ?></span>
+                                <span class="badge badge--thick" data-cat="<?= htmlspecialchars($f['categorie']) ?>"><?= htmlspecialchars($f['categorie']) ?></span>
                             </td>
 
                             <td class="col-niveau">
-                                <span class="admin-badge-niveau" data-niveau="<?= htmlspecialchars($f['niveau']) ?>"><?= htmlspecialchars($f['niveau']) ?></span>
+                                <span class="badge badge--thick"><?= htmlspecialchars($f['niveau']) ?></span>
                             </td>
 
                             <td class="col-audio">
@@ -87,11 +87,11 @@ $fiches     = getFichesDetaillees();
 
                             <td class="col-actions">
                                 <a href="index.php?view=admin_fiche_form&id=<?= $f['id'] ?>"
-                                   class="admin-btn-action admin-btn-modifier">
+                                   class="admin-btn-action">
                                     Modifier
                                 </a>
                                 <a href="index.php?view=admin_questions&fiche_id=<?= $f['id'] ?>"
-                                   class="admin-btn-action admin-btn-questions">
+                                   class="admin-btn-action">
                                     Questions
                                 </a>
                                 <a href="controleur.php?action=supprimer_fiche&id=<?= $f['id'] ?>"

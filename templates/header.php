@@ -31,7 +31,7 @@
         <span class="logo-text">MusicForNoobs</span>
     </a>
 
-    <?php if (isset($_SESSION["connecte"]) && $_SESSION["connecte"]): ?>
+    <?php if (valider("connecte", "SESSION")): ?>
         <div class="navbar-links">
             <a href="index.php?view=fiches"
                class="nav-link <?= ($view === 'fiches' || $view === 'fiche_read') ? 'active' : '' ?>">
@@ -45,7 +45,7 @@
                class="nav-link <?= $view === 'classement' ? 'active' : '' ?>">
                 Classement
             </a>
-            <?php if (isset($_SESSION["role"]) && $_SESSION["role"] === "admin"): ?>
+            <?php if (valider("role", "SESSION") === "admin"): ?>
                 <a href="index.php?view=admin_fiches"
                    class="nav-link <?= strpos($view, 'admin_') === 0 ? 'active' : '' ?>">
                     Administration
@@ -55,7 +55,7 @@
 
         <div class="navbar-user">
             <?php
-                $initiales = strtoupper(substr($_SESSION["login"], 0, 2));
+                $initiales = strtoupper(substr(valider("login", "SESSION"), 0, 2));
             ?>
             <div class="avatar-menu" id="avatarMenu">
                 <button class="avatar" onclick="toggleAvatarMenu()" type="button">
@@ -64,7 +64,7 @@
                 <div class="avatar-dropdown" id="avatarDropdown">
                     <div class="avatar-dropdown-header">
                         <span class="annotation">Connecté en tant que</span>
-                        <strong><?= htmlspecialchars($_SESSION["login"]) ?></strong>
+                        <strong><?= htmlspecialchars(valider("login", "SESSION")) ?></strong>
                     </div>
                     <a href="index.php?view=dashboard" class="avatar-dropdown-item">
                         Dashboard

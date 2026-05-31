@@ -2,12 +2,14 @@
 /*
  * Fichier : libs/modele/modele_resultats.php
  * Auteur  : LEFEBVRE Lucas
- * Description : fonctions d'acces a la table resultats
+ * Description : fonctions d'accès à la table resultats
  */
 
 
 /**
- * Enregistre le resultat d'un quiz
+ * Enregistre un passage de quiz (score brut + points effectivement gagnés).
+ * points_gagnes peut être 0 si l'utilisateur n'a pas battu son meilleur score —
+ * on l'enregistre quand même pour garder l'historique d'activité complet.
  */
 function enregistrerResultat($idUser, $idFiche, $score, $pointsGagnes) {
     $sql = "INSERT INTO resultats (id_utilisateur, id_fiche, score, points_gagnes)
@@ -18,8 +20,9 @@ function enregistrerResultat($idUser, $idFiche, $score, $pointsGagnes) {
 
 
 /**
- * Renvoie le meilleur score d'un utilisateur sur une fiche
- * 0 si jamais passe
+ * Renvoie le meilleur score d'un utilisateur sur une fiche donnée.
+ * Retourne NULL (pas 0) si l'utilisateur n'a jamais passé ce quiz :
+ * le contrôleur doit donc tester avec !$ancienMax avant de calculer le delta.
  */
 function getMeilleurScore($idUser, $idFiche) {
     $sql = "SELECT MAX(score)
@@ -32,8 +35,9 @@ function getMeilleurScore($idUser, $idFiche) {
 
 
 /**
- * Renvoie les N derniers quiz passes par un utilisateur
- * Tableau de [score, points_gagnes, date_passage, titre_fiche, categorie, couleur]
+ * Renvoie les N derniers quiz passés par un utilisateur, avec le titre de la fiche
+ * et la couleur de sa catégorie (nécessaire pour afficher le badge coloré dans le dashboard).
+ * Triple jointure : resultats → fiches → categories.
  */
 function getActiviteRecente($idUser, $limit = 3) {
     $sql = "SELECT
@@ -55,7 +59,8 @@ function getActiviteRecente($idUser, $limit = 3) {
 
 
 /**
- * Renvoie le nombre de quiz differents passes par un utilisateur
+ * Renvoie le nombre de quiz distincts passés par un utilisateur.
+ * DISTINCT sur id_fiche car un même quiz peut être repassé plusieurs fois.
  */
 function getNbQuizPasses($idUser) {
     $sql = "SELECT COUNT(DISTINCT id_fiche)
