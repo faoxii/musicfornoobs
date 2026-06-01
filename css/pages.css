@@ -288,8 +288,76 @@
 }
 
 @media (max-width: 768px) {
-    .hero-titre { font-size: 40px; }
+    .hero-titre { font-size: 36px; }
     .accueil-categories { grid-template-columns: 1fr; padding: 0 16px 40px; }
+
+    /* Catalogue fiches/quiz : sidebar passe au-dessus du contenu */
+    .catalogue-layout {
+        flex-direction: column;
+        min-height: unset;
+    }
+
+    .sidebar-filtres-custom {
+        width: 100%;
+        min-width: unset;
+        border-right: none;
+        border-bottom: 2px solid var(--text);
+        padding: 16px;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 8px;
+        align-items: center;
+    }
+
+    .sidebar-titre {
+        width: 100%;
+        font-size: 20px;
+        margin-bottom: 4px;
+    }
+
+    .sidebar-titre.mt-space {
+        margin-top: 8px;
+    }
+
+    .filter-btn-custom {
+        padding: 6px 12px;
+        font-size: 14px;
+    }
+
+    .catalogue-main {
+        padding: 16px;
+    }
+
+    /* En-tête catalogue : titre + recherche s'empilent */
+    .catalogue-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        margin-bottom: 16px;
+    }
+
+    .search-input-custom {
+        width: 100%;
+    }
+
+    /* Grille : 1 colonne sur mobile */
+    .fiches-grid-2 {
+        grid-template-columns: 1fr;
+    }
+
+    /* Dashboard : 2 cartes par ligne au lieu de 4 */
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    /* Classement : wrapper pleine largeur */
+    .classement-wrapper {
+        max-width: 100%;
+    }
+
+    .classement-stat {
+        display: none;
+    }
 }
 
 /* === DASHBOARD === */

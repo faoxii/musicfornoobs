@@ -42,13 +42,33 @@ function getQuizDisponibles($idCategorie = false, $niveau = false) {
 
 
 /**
- * Renvoie une question avec ses 4 réponses pour le déroulement du quiz.
- * La requête retourne 4 lignes (une par réponse), pas un tableau structuré :
- * c'est le contrôleur et le template qui itèrent dessus.
- * Important : est_correct ne doit jamais être envoyé au navigateur — il n'est
- * utilisé qu'en PHP côté serveur lors de la soumission.
+ * Renvoie la Nième question d'une fiche avec ses 4 réponses.
+ *
+ * HISTORIQUE DU BUG :
+ * L'ancienne version cherchait avec WHERE q.ordre = $numeroQuestion (ex : ordre = 1).
+ * Quand on supprimait des questions et qu'on en recréait, le calcul de l'ordre utilisait
+ * count(questions existantes) + 1 au lieu de max(ordre) + 1. Résultat : des trous dans
+ * les numéros d'ordre (ex : 3, 4, 4, 4, 5 au lieu de 1, 2, 3, 4, 5). La question
+ * avec ordre = 1 n'existait plus → getQuestion retournait vide → le quiz renvoyait
+ * silencieusement vers le catalogue sans message d'erreur.
+ *
+ * SOLUTION :
+ * On cherche la Nième question par sa POSITION dans la liste triée, pas par sa valeur
+ * d'ordre. Peu importe que les ordres soient 1,2,3,4,5 ou 3,7,9,12,15 — la 1ère
+ * question dans l'ordre reste la 1ère question du quiz.
  */
 function getQuestion($idFiche, $numeroQuestion) {
+    $idF = proteger($idFiche);
+
+    // OFFSET = combien de lignes on saute avant de prendre la suivante.
+    // Question 1 → OFFSET 0 (on saute rien, on prend la 1ère).
+    // Question 2 → OFFSET 1 (on saute la 1ère, on prend la 2ème). Etc.
+    $offset = intval($numeroQuestion) - 1;
+
+    // La sous-requête récupère l'id de la Nième question triée par ordre.
+    // Le JOIN avec quiz_reponses retourne 4 lignes (une par réponse A/B/C/D).
+    // est_correct est sélectionné ici pour la vérification côté serveur uniquement —
+    // il ne doit jamais être affiché dans le HTML envoyé au navigateur.
     $sql = "SELECT
                 q.id           AS id_question,
                 q.enonce,
@@ -60,8 +80,12 @@ function getQuestion($idFiche, $numeroQuestion) {
                 r.ordre
             FROM quiz_questions q
             JOIN quiz_reponses r ON r.id_question = q.id
-            WHERE q.id_fiche = '$idFiche'
-              AND q.ordre    = '$numeroQuestion'
+            WHERE q.id = (
+                SELECT id FROM quiz_questions
+                WHERE id_fiche = '$idF'
+                ORDER BY ordre
+                LIMIT 1 OFFSET $offset
+            )
             ORDER BY r.ordre";
 
     return parcoursRs(SQLSelect($sql));

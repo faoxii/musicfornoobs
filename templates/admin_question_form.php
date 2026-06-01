@@ -45,12 +45,16 @@ if ($idQuestion) {
     }
 }
 
-// Calcule le prochain ordre si mode création
+// Calcule le prochain ordre si mode création.
+// On prend max(ordre) + 1 et non count + 1 : si des questions ont été supprimées
+// et recréées, count donne un ordre déjà existant et crée des doublons.
 $prochaineOrdre = 1;
 if (!$modeEdition) {
-    $existantes = getQuestionsFiche($idFiche);
-    $ordresExistants = array_unique(array_column($existantes, 'ordre_question'));
-    $prochaineOrdre  = count($ordresExistants) + 1;
+    $existantes      = getQuestionsFiche($idFiche);
+    $ordresExistants = array_column($existantes, 'ordre_question');
+    if (!empty($ordresExistants)) {
+        $prochaineOrdre = max($ordresExistants) + 1;
+    }
 }
 
 $titrePage = $modeEdition ? 'Modifier la question' : 'Nouvelle question';
@@ -133,7 +137,7 @@ $titrePage = $modeEdition ? 'Modifier la question' : 'Nouvelle question';
 
             <!-- Fichier audio (affiché seulement si type = audio) -->
             <div class="admin-form-group" id="section-audio"
-                 style="<?= ($modeEdition && $question['type'] === 'texte') ? 'display:none' : '' ?>">
+                 style="<?= (!$modeEdition || $question['type'] === 'texte') ? 'display:none' : '' ?>">
                 <label class="admin-form-label">
                     Fichier audio
                 </label>
@@ -199,7 +203,7 @@ $titrePage = $modeEdition ? 'Modifier la question' : 'Nouvelle question';
                         >
                         <label class="admin-reponse-correcte-label">
                             <input type="radio" name="bonne_reponse" value="<?= $i ?>"
-                                <?= $estCorrecte ? 'checked' : '' ?>>
+                                <?= ($estCorrecte || (!$modeEdition && $i === 0)) ? 'checked' : '' ?>>
                             Bonne réponse
                         </label>
                     </div>
