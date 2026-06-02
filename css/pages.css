@@ -54,8 +54,17 @@
     color: var(--text-muted);
 }
 
-.quiz-progress-segment.done    { background: var(--success);     color: white; border-color: var(--success); }
-.quiz-progress-segment.current { background: var(--in-progress); color: white; border-color: var(--in-progress); }
+.quiz-progress-segment.done    { 
+    background: var(--success);     
+    color: white; 
+    border-color: var(--success); 
+}
+
+.quiz-progress-segment.current { 
+    background: var(--in-progress); 
+    color: white; 
+    border-color: var(--in-progress); 
+}
 
 
 /* === QUIZ : reponses radio === */
@@ -84,18 +93,60 @@
 
 
 /* === RESULTATS PAGE (Interface 8) === */
-.resultats-wrapper         { max-width: 800px; margin: 0 auto; text-align: center; }
-.resultats-score           { font-size: 80px; margin-bottom: 0; }
-.resultats-score-denom     { font-size: 40px; color: var(--text-muted); }
-.resultats-annotation      { margin-bottom: 32px; }
-.resultats-detail-card     { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; text-align: left; padding: 24px; }
-.resultats-detail-card h3  { margin-bottom: 16px; }
-.resultat-detail-body      { flex: 1; }
-.resultat-question-enonce  { display: block; margin-bottom: 4px; }
-.badge-correct             { background: var(--success); color: white; border-color: var(--success); }
-.badge-wrong               { background: white; border-color: var(--error); }
-.resultat-arrow            { margin: 0 8px; }
-.resultats-actions         { margin-top: 32px; display: flex; gap: 16px; justify-content: center; }
+.resultats-wrapper { 
+    max-width: 800px; 
+    margin: 0 auto; 
+    text-align: center; 
+}
+.resultats-score {
+    font-size: 80px; 
+    margin-bottom: 0; 
+}
+.resultats-score-denom { 
+    font-size: 40px; 
+    color: var(--text-muted); 
+}
+.resultats-annotation { 
+    margin-bottom: 32px; 
+}
+.resultats-detail-card { 
+    background: var(--bg-card); 
+    border: 1px solid var(--border); 
+    border-radius: 12px; 
+    text-align: left; 
+    padding: 24px; 
+}
+
+.resultats-detail-card h3 { 
+    margin-bottom: 16px; 
+}
+.resultat-detail-body { 
+    flex: 1; 
+}
+.resultat-question-enonce  { 
+    display: block; margin-bottom: 4px; }
+
+.badge-correct { 
+    background: var(--success); 
+    color: white; 
+    border-color: var(--success);
+ }
+
+.badge-wrong { 
+    background: white;
+    border-color: var(--error); 
+}
+
+.resultat-arrow{ 
+    margin: 0 8px; 
+}
+
+.resultats-actions{ 
+    margin-top: 32px; 
+    display: flex;
+     gap: 16px; 
+     justify-content: center;
+    }
 
 
 /* === QUIZ PLAY PAGE (Interface 7) === */
@@ -287,78 +338,6 @@
     margin-bottom: 0;
 }
 
-@media (max-width: 768px) {
-    .hero-titre { font-size: 36px; }
-    .accueil-categories { grid-template-columns: 1fr; padding: 0 16px 40px; }
-
-    /* Catalogue fiches/quiz : sidebar passe au-dessus du contenu */
-    .catalogue-layout {
-        flex-direction: column;
-        min-height: unset;
-    }
-
-    .sidebar-filtres-custom {
-        width: 100%;
-        min-width: unset;
-        border-right: none;
-        border-bottom: 2px solid var(--text);
-        padding: 16px;
-        flex-direction: row;
-        flex-wrap: wrap;
-        gap: 8px;
-        align-items: center;
-    }
-
-    .sidebar-titre {
-        width: 100%;
-        font-size: 20px;
-        margin-bottom: 4px;
-    }
-
-    .sidebar-titre.mt-space {
-        margin-top: 8px;
-    }
-
-    .filter-btn-custom {
-        padding: 6px 12px;
-        font-size: 14px;
-    }
-
-    .catalogue-main {
-        padding: 16px;
-    }
-
-    /* En-tête catalogue : titre + recherche s'empilent */
-    .catalogue-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 12px;
-        margin-bottom: 16px;
-    }
-
-    .search-input-custom {
-        width: 100%;
-    }
-
-    /* Grille : 1 colonne sur mobile */
-    .fiches-grid-2 {
-        grid-template-columns: 1fr;
-    }
-
-    /* Dashboard : 2 cartes par ligne au lieu de 4 */
-    .stats-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    /* Classement : wrapper pleine largeur */
-    .classement-wrapper {
-        max-width: 100%;
-    }
-
-    .classement-stat {
-        display: none;
-    }
-}
 
 /* === DASHBOARD === */
 .avatar-large {
@@ -726,7 +705,6 @@
 .audio-time-label {
     font-family: var(--font-mono);
     font-size: 14px;
-    white-space: nowrap;
 }
 
 .fiche-action-quiz {
@@ -766,9 +744,7 @@
 }
 
 .liste-mots-flex .mot-box {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+    display: inline-block;
     padding: 8px 18px; /* Donne la forme de badge élastique selon la taille du mot */
     border: 2px solid var(--text);
     border-radius: 12px;
@@ -914,15 +890,31 @@
 }
  
 /* Colonnes */
-.col-fiche     { width: 30%; }
-.col-cat       { width: 14%; }
-.col-niveau    { width: 14%; }
-.col-audio     { width: 8%;  text-align: center; }
-.col-questions { width: 10%; text-align: center; }
-.col-actions   { width: 24%; }
+.col-fiche { 
+    width: 30%; 
+}
+.col-cat { 
+    width: 14%; 
+}
+.col-niveau { 
+    width: 14%; 
+}
+.col-audio { 
+    width: 8%;  
+    text-align: center; 
+}
+.col-questions { 
+    width: 10%; 
+    text-align: center;
+ }
+.col-actions { 
+    width: 24%; 
+}
  
 td.col-audio,
-td.col-questions { text-align: center; }
+td.col-questions { 
+    text-align: center; 
+}
  
 td.col-actions {
     display: flex;
@@ -1168,7 +1160,10 @@ td.col-actions {
     font-size: 16px;
 }
 
-.admin-dropzone-body .annotation { display: block; margin-top: 2px; }
+.admin-dropzone-body .annotation { 
+    display: block; 
+    margin-top: 2px;
+ }
  
 .admin-dropzone-filename {
     font-family: var(--font-mono);

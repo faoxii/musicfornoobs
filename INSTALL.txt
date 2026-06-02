@@ -1,0 +1,69 @@
+========================================
+MusicForNoobs - Guide d'installation
+LEFEBVRE Lucas / BOURGUIGNON Mathis
+========================================
+
+PREREQUIS
+---------
+- Ubuntu avec Apache2
+- PHP 8.x
+- MySQL / MariaDB
+- phpMyAdmin
+
+
+ETAPE 1 - Copier les fichiers
+------------------------------
+Copier le dossier "musicfornoobs" dans le repertoire web d'Apache 
+Verifier que Apache a les droits en lecture 
+
+ETAPE 2 - Importer la base de donnees
+---------------------------------------
+1. Ouvrir phpMyAdmin dans le navigateur 
+2. Creer une nouvelle base de donnees nommee exactement : musicfornoobs
+3. Selectionner la base "musicfornoobs"
+4. Onglet "Importer" > choisir le fichier : musicfornoobs.sql
+5. Cliquer sur "Executer"
+
+
+ETAPE 3 - Modifier le fichier de configuration
+------------------------------------------------
+Ouvrir le fichier : libs/config.php
+
+Remplacer le contenu par :
+
+    $BDD_host     = "localhost";
+    $BDD_user     = "VOTRE_USER_BDD";
+    $BDD_password = "VOTRE_MOT_DE_PASSE_MYSQL";
+    $BDD_base     = "musicfornoobs";
+
+Si MySQL n'a pas de mot de passe sur votre machine :
+
+    $BDD_password = "";
+
+
+ETAPE 4 - Acceder au site
+
+
+
+
+========================================
+IDENTIFIANTS DE TEST
+========================================
+
+Compte ADMIN :
+  Login    : Lucas_L
+  Mot de passe : motdepasse123
+
+Compte ADMIN :
+  Login    : Mathis_B
+  Mot de passe : motdepasse123
+
+Compte utilisateur :
+  Login    : thomas.b
+  Mot de passe : motdepasse123
+
+Compte utilisateur :
+  Login    : noemie_22
+  Mot de passe : motdepasse123
+
+========================================

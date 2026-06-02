@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @file maLibSQL.php
  * Ce fichier définit les fonctions de requêtage

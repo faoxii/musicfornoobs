@@ -364,14 +364,22 @@ label > span {
 
 .admin-btn-delete { color: var(--error); border-color: var(--error); }
  
-/* Couleurs de catégorie pour les badges admin (via data-cat) */
-.badge--thick[data-cat="Gammes"]     { background: var(--cat-gammes); }
+/* Couleurs de catégorie pour les badges admin */
+.badge--thick[data-cat="Gammes"] {
+     background: var(--cat-gammes); 
+    }
 .badge--thick[data-cat="Accords"]    { background: var(--cat-accords); }
 .badge--thick[data-cat="Intervalles"]{ background: var(--cat-intervalles); }
 
 
-.admin-check { color: var(--success); font-size: 18px; font-weight: 700; }
-.admin-dash  { color: var(--text-muted); }
+.admin-check { 
+    color: var(--success); 
+    font-size: 18px; 
+    font-weight: 700;
+ }
+.admin-dash { 
+    color: var(--text-muted); 
+}
 
 .badge-lu {
     background: var(--success);

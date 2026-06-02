@@ -168,6 +168,8 @@ switch ($action) {
 
         // Nettoyage de la session quiz — on libère l'état pour éviter qu'un rechargement
         // de la page résultats resoumette le bilan
+
+        // unset permet de supprimer une variable de session sans détruire toute la session (contrairement à session_destroy)
         unset($_SESSION["quiz_etape"]);
         unset($_SESSION["quiz_reponses"]);
         unset($_SESSION["quiz_slug"]);
@@ -194,14 +196,15 @@ switch ($action) {
 
         $slug = genererSlug($titre);
 
-        // L'audio est facultatif — une fiche peut exister sans exemple sonore
-        $cheminAudio = null;
-        if (!empty($_FILES['fichier_audio']['name'])) {
-            $nomFichier  = basename($_FILES['fichier_audio']['name']);
-            $destination = "assets/audio/fiches/" . $nomFichier;
-            move_uploaded_file($_FILES['fichier_audio']['tmp_name'], $destination);
-            $cheminAudio = $destination;
+        // L'audio est facultatif — une fiche peut exister sans exemple sonore.
+        // traiterUploadAudio valide (taille, type réel) et déplace le fichier ;
+        // on interprète son retour ici car l'URL de redirection dépend du contexte.
+        $audio = traiterUploadAudio('fichier_audio', 'assets/audio/fiches/', $slug);
+        if (!$audio['ok']) {
+            rediriger("index.php?view=admin_fiche_form&erreur=" . urlencode($audio['erreur']));
+            break;
         }
+        $cheminAudio = $audio['chemin'];
 
         creerFiche($titre, $slug, $idCategorie, $niveau, $contenu, $cheminAudio);
 
@@ -224,13 +227,14 @@ switch ($action) {
         $slug           = genererSlug($titre);
         $supprimerAudio = (valider("supprimer_audio", "POST") == "1");
 
-        $cheminAudio = null;
-        if (!empty($_FILES['fichier_audio']['name'])) {
-            $nomFichier  = basename($_FILES['fichier_audio']['name']);
-            $destination = "assets/audio/fiches/" . $nomFichier;
-            move_uploaded_file($_FILES['fichier_audio']['tmp_name'], $destination);
-            $cheminAudio = $destination;
+        // Validation + déplacement de l'audio déléguée à traiterUploadAudio.
+        // Si aucun fichier n'est envoyé, $audio['chemin'] vaut null (cas normal).
+        $audio = traiterUploadAudio('fichier_audio', 'assets/audio/fiches/', $slug);
+        if (!$audio['ok']) {
+            rediriger("index.php?view=admin_fiche_form&id=" . $idFiche . "&erreur=" . urlencode($audio['erreur']));
+            break;
         }
+        $cheminAudio = $audio['chemin'];
 
         modifierFiche($idFiche, $titre, $slug, $idCategorie, $niveau, $contenu, $cheminAudio, $supprimerAudio);
 
@@ -267,11 +271,13 @@ switch ($action) {
 
         // L'audio n'est uploadé que pour les questions de type "audio"
         $cheminAudio = null;
-        if ($type === 'audio' && !empty($_FILES['fichier_audio_question']['name'])) {
-            $nomFichier  = basename($_FILES['fichier_audio_question']['name']);
-            $destination = "assets/audio/quiz/" . $nomFichier;
-            move_uploaded_file($_FILES['fichier_audio_question']['tmp_name'], $destination);
-            $cheminAudio = $destination;
+        if ($type === 'audio') {
+            $audio = traiterUploadAudio('fichier_audio_question', 'assets/audio/quiz/', 'question-' . $idFiche);
+            if (!$audio['ok']) {
+                rediriger("index.php?view=admin_question_form&fiche_id=" . $idFiche . "&erreur=" . urlencode($audio['erreur']));
+                break;
+            }
+            $cheminAudio = $audio['chemin'];
         }
 
         $idQuestion = creerQuestion($idFiche, $type, $enonce, $cheminAudio, $ordre);
@@ -305,11 +311,13 @@ switch ($action) {
         $cheminAudio    = null;
         $supprimerAudio = (valider("supprimer_audio_question", "POST") == "1");
 
-        if ($type === 'audio' && !empty($_FILES['fichier_audio_question']['name'])) {
-            $nomFichier  = basename($_FILES['fichier_audio_question']['name']);
-            $destination = "assets/audio/quiz/" . $nomFichier;
-            move_uploaded_file($_FILES['fichier_audio_question']['tmp_name'], $destination);
-            $cheminAudio = $destination;
+        if ($type === 'audio') {
+            $audio = traiterUploadAudio('fichier_audio_question', 'assets/audio/quiz/', 'question-' . $idFiche);
+            if (!$audio['ok']) {
+                rediriger("index.php?view=admin_question_form&fiche_id=" . $idFiche . "&question_id=" . $idQuestion . "&erreur=" . urlencode($audio['erreur']));
+                break;
+            }
+            $cheminAudio = $audio['chemin'];
         }
 
         if ($supprimerAudio) {

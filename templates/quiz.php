@@ -58,6 +58,7 @@ $nbQuizTotal = count($tousQuizzes);
         <a href="index.php?view=quiz<?= $catUrl ? '&cat='.$catUrl : '' ?>" class="filter-btn-custom <?= (!$nivUrl) ? 'active' : '' ?>">Tout</a>
         <a href="index.php?view=quiz&niveau=Debutant<?= $catUrl ? '&cat='.$catUrl : '' ?>" class="filter-btn-custom <?= ($nivUrl == 'Debutant') ? 'active' : '' ?>">Debutant</a>
         <a href="index.php?view=quiz&niveau=Intermediaire<?= $catUrl ? '&cat='.$catUrl : '' ?>" class="filter-btn-custom <?= ($nivUrl == 'Intermediaire') ? 'active' : '' ?>">Intermediaire</a>
+        <a href="index.php?view=quiz&niveau=Avance<?= $catUrl ? '&cat='.$catUrl : '' ?>" class="filter-btn-custom <?= ($nivUrl == 'Avance') ? 'active' : '' ?>">Avancé</a>
     </aside>
 
     <div class="catalogue-main">
@@ -84,7 +85,7 @@ $nbQuizTotal = count($tousQuizzes);
                         <h3 class="card-titre-custom"><?= htmlspecialchars($q['titre']) ?></h3>
 
                         <div class="card-niveau-container">
-                            <span class="annotation">// <?= $q['nb_questions'] ?> questions disponibles</span>
+                            <span class="annotation">// <?= $q['nb_questions'] ?> questions disponibles</span>  
                         </div>
 
                         <div class="card-actions-custom">

@@ -103,9 +103,12 @@ $nbQuestions = count($questions);
                     <!-- Lecteur audio si question de type audio -->
                     <?php if ($q['type'] === 'audio' && !empty($q['chemin_audio'])): ?>
                         <div class="admin-q-audio">
-                            <button class="admin-q-play-btn" type="button"
+                            
+                        <button class="admin-q-play-btn" type="button"
                                     onclick="toggleAudio('audio-<?= $q['id'] ?>', this)">&#9654;</button>
-                            <span><?= htmlspecialchars(basename($q['chemin_audio'])) ?></span>
+                            
+                            
+                                    <span><?= htmlspecialchars(basename($q['chemin_audio'])) ?></span>
                             <audio id="audio-<?= $q['id'] ?>" src="<?= htmlspecialchars($q['chemin_audio']) ?>"></audio>
                         </div>
                     <?php endif; ?>

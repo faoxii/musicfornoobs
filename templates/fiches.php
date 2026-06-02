@@ -48,6 +48,7 @@ $nbFichesTotal = count($toutesfiches);
         <a href="index.php?view=fiches<?= $catUrl ? '&cat='.$catUrl : '' ?>" class="filter-btn-custom <?= (!$nivUrl) ? 'active' : '' ?>">Tout</a>
         <a href="index.php?view=fiches&niveau=Debutant<?= $catUrl ? '&cat='.$catUrl : '' ?>" class="filter-btn-custom <?= ($nivUrl == 'Debutant') ? 'active' : '' ?>">Debutant</a>
         <a href="index.php?view=fiches&niveau=Intermediaire<?= $catUrl ? '&cat='.$catUrl : '' ?>" class="filter-btn-custom <?= ($nivUrl == 'Intermediaire') ? 'active' : '' ?>">Intermediaire</a>
+        <a href="index.php?view=fiches&niveau=Avance<?= $catUrl ? '&cat='.$catUrl : '' ?>" class="filter-btn-custom <?= ($nivUrl == 'Avance') ? 'active' : '' ?>">Avancé</a>
         
         
     </aside>

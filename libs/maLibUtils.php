@@ -16,38 +16,36 @@ require_once("libs/Parsedown.php"); // pour le markdown
  * @param string $type
  * @return string|boolean
  */
-function valider($nom,$type="REQUEST")
-{	
-	switch($type)
-	{
-		case 'REQUEST': 
-		if(isset($_REQUEST[$nom]) && !($_REQUEST[$nom] == "")) 	
-			return proteger($_REQUEST[$nom]); 	
-		break;
-		case 'GET': 	
-		if(isset($_GET[$nom]) && !($_GET[$nom] == "")) 			
-			return proteger($_GET[$nom]); 
-		break;
-		case 'POST': 	
-		if(isset($_POST[$nom]) && !($_POST[$nom] == "")) 	
-			return proteger($_POST[$nom]); 		
-		break;
-		case 'COOKIE': 	
-		if(isset($_COOKIE[$nom]) && !($_COOKIE[$nom] == "")) 	
-			return proteger($_COOKIE[$nom]);	
-		break;
-		case 'SESSION': 
-		if(isset($_SESSION[$nom]) && !($_SESSION[$nom] == "")) 	
-			return $_SESSION[$nom]; 		
-		break;
-		case 'SERVER': 
-		if(isset($_SERVER[$nom]) && !($_SERVER[$nom] == "")) 	
-			return $_SERVER[$nom]; 		
-		break;
-	}
-	return false; // Si pb pour récupérer la valeur 
+function valider($nom, $type = "REQUEST")
+{
+    switch ($type) {
+        case 'REQUEST':
+            if (isset($_REQUEST[$nom]) && !($_REQUEST[$nom] == ""))
+                return $_REQUEST[$nom];
+            break;
+        case 'GET':
+            if (isset($_GET[$nom]) && !($_GET[$nom] == ""))
+                return $_GET[$nom];
+            break;
+        case 'POST':
+            if (isset($_POST[$nom]) && !($_POST[$nom] == ""))
+                return $_POST[$nom];
+            break;
+        case 'COOKIE':
+            if (isset($_COOKIE[$nom]) && !($_COOKIE[$nom] == ""))
+                return $_COOKIE[$nom];
+            break;
+        case 'SESSION':
+            if (isset($_SESSION[$nom]) && !($_SESSION[$nom] == ""))
+                return $_SESSION[$nom];
+            break;
+        case 'SERVER':
+            if (isset($_SERVER[$nom]) && !($_SERVER[$nom] == ""))
+                return $_SERVER[$nom];
+            break;
+    }
+    return false;
 }
-
 
 /**
  * Vérifie l'existence (isset) et la taille (non vide) d'un paramètre dans un des tableaux GET, POST, COOKIE, SESSION
@@ -159,4 +157,58 @@ function fichesMarkdownToHtml($texte) {
 
     return $html;
 }
+
+
+/**
+ * Valide et déplace un fichier audio uploadé.
+ * Ne redirige pas elle-même : retourne un tableau que l'appelant interprète,
+ * car l'URL de redirection en cas d'erreur dépend du contexte (fiche, question...).
+ *
+ * @param string $champ    Nom du champ dans $_FILES (ex: 'fichier_audio')
+ * @param string $dossier  Dossier de destination (ex: 'assets/audio/fiches/')
+ * @param string $prefixe  Préfixe du nom de fichier généré (ex: un slug ou 'question-12')
+ * @return array  ['ok' => true, 'chemin' => '...']  si succès
+ *                ['ok' => false, 'erreur' => '...']  si refus
+ *                ['ok' => true, 'chemin' => null]    si aucun fichier fourni (cas normal, audio facultatif)
+ */
+function traiterUploadAudio($champ, $dossier, $prefixe)
+{
+    // Aucun fichier envoyé : ce n'est pas une erreur, l'audio est facultatif
+    if (empty($_FILES[$champ]['name'])) {
+        return ['ok' => true, 'chemin' => null];
+    }
+
+    $f = $_FILES[$champ];
+
+    // Erreur d'upload signalée par PHP (taille ini dépassée, upload partiel...)
+    if ($f['error'] !== UPLOAD_ERR_OK) {
+        return ['ok' => false, 'erreur' => "Erreur lors de l'upload du fichier audio."];
+    }
+
+    // Taille : 5 Mo max (5 * 1024 * 1024 octets)
+    if ($f['size'] > 5 * 1024 * 1024) {
+        return ['ok' => false, 'erreur' => "Fichier audio trop volumineux (5 Mo max)."];
+    }
+
+    // Type réel : on lit les octets du fichier avec finfo, pas l'extension ni le type
+    // annoncé par le navigateur, qui sont tous les deux falsifiables par le client
+    $finfo = finfo_open(FILEINFO_MIME_TYPE);
+    $mime  = finfo_file($finfo, $f['tmp_name']);
+    finfo_close($finfo);
+
+    $extensionsAutorisees = ['audio/mpeg' => 'mp3']; // MP3 uniquement
+    if (!isset($extensionsAutorisees[$mime])) {
+        return ['ok' => false, 'erreur' => "Format non autorisé (MP3 uniquement)."];
+    }
+
+    // On génère nous-mêmes le nom du fichier : on ne fait jamais confiance
+    // au nom d'origine (évite les noms piégés et les collisions)
+    $extension   = $extensionsAutorisees[$mime];
+    $nomFichier  = $prefixe . '-' . time() . '.' . $extension;
+    $destination = $dossier . $nomFichier;
+    move_uploaded_file($f['tmp_name'], $destination);
+
+    return ['ok' => true, 'chemin' => $destination];
+}
 ?>
+
